@@ -1,4 +1,4 @@
-const CACHE = "fitsugar-pro-v10";
+const CACHE = "fitsugar-pro-v12";
 const CORE = ["./", "./landing.html", "./index.html", "./landing.css", "./styles.css", "./audio.css", "./install.css", "./i18n.js", "./india-foods.js", "./app.js", "./audio.js", "./install.js", "./manifest.json", "./icon.svg", "./icon-maskable.svg", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE))));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))));

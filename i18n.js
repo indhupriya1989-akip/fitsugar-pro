@@ -15,7 +15,7 @@
     myFitness:"MY FITNESS", home:"Home", workouts:"Workouts", nutrition:"Nutrition", progress:"Progress",
     coach:"FitSugar Coach", myGym:"MY GYM", membership:"Membership", owner:"Owner Console",
     unlock:"Unlock your best", unlockDesc:"Custom plans, deeper insights, zero limits.", explore:"Explore Pro",
-    search:"Search workouts, food, plans...", greeting:"Good morning, Arun", greetingSub:"Small steps, strong habits. Let’s make today count.",
+    search:"Search workouts, food, plans...", greeting:"Good morning", greetingSub:"Small steps, strong habits. Let’s make today count.",
     streak:"12 day streak", best:"Your best: 18 days", todayWorkout:"TODAY'S WORKOUT", upper:"Upper Body Strength",
     start:"Start workout", glucose:"GLUCOSE CHECK-IN", inRange:"You're in range", stable:"Stable", logReading:"+ Log new reading",
     weekly:"Your weekly plan", fullPlan:"View full plan →", fuel:"FUEL YOUR DAY", upNext:"Up next",

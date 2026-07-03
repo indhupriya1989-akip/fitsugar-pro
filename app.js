@@ -25,6 +25,54 @@ const members = [
   ["Ravi Kumar","Pro Annual","Vikram S.","1 Jul","Active"],
   ["Lakshmi P.","Monthly","Priya Raman","29 Jun","Payment due"]
 ];
+const defaultUserProfile={name:"",city:"Your city",gym:"Your gym"};
+let userProfile=defaultUserProfile;
+try{
+  userProfile={...defaultUserProfile,...JSON.parse(localStorage.getItem("fitsugar-profile-v2")||"{}")};
+}catch(error){
+  localStorage.removeItem("fitsugar-profile-v2");
+}
+const salutations={
+  en:{morning:"Good morning",afternoon:"Good afternoon",evening:"Good evening"},
+  ta:{morning:"காலை வணக்கம்",afternoon:"மதிய வணக்கம்",evening:"மாலை வணக்கம்"},
+  hi:{morning:"सुप्रभात",afternoon:"नमस्कार",evening:"शुभ संध्या"},
+  te:{morning:"శుభోదయం",afternoon:"శుభ మధ్యాహ్నం",evening:"శుభ సాయంత్రం"},
+  ml:{morning:"സുപ്രഭാതം",afternoon:"ശുഭ മധ്യാഹ്നം",evening:"ശുഭ സായാഹ്നം"},
+  kn:{morning:"ಶುಭೋದಯ",afternoon:"ಶುಭ ಮಧ್ಯಾಹ್ನ",evening:"ಶುಭ ಸಂಜೆ"},
+  bn:{morning:"সুপ্রভাত",afternoon:"শুভ অপরাহ্ন",evening:"শুভ সন্ধ্যা"},
+  mr:{morning:"शुभ सकाळ",afternoon:"शुभ दुपार",evening:"शुभ संध्याकाळ"},
+  gu:{morning:"સુપ્રભાત",afternoon:"શુભ બપોર",evening:"શુભ સાંજ"}
+};
+function cleanProfileValue(value,fallback,maxLength=50){
+  const cleaned=String(value||"").trim().replace(/\s+/g," ").slice(0,maxLength);
+  return cleaned||fallback;
+}
+function greetingForNow(){
+  const hour=new Date().getHours();
+  const period=hour<12?"morning":hour<17?"afternoon":"evening";
+  return (salutations[FitSugarI18n.code]||salutations.en)[period];
+}
+function renderUserProfile(){
+  userProfile={
+    name:cleanProfileValue(userProfile.name,defaultUserProfile.name,40),
+    city:cleanProfileValue(userProfile.city,defaultUserProfile.city,40),
+    gym:cleanProfileValue(userProfile.gym,defaultUserProfile.gym,60)
+  };
+  const displayName=userProfile.name||"FitSugar Member";
+  const firstName=userProfile.name?userProfile.name.split(" ")[0]:"";
+  const initials=userProfile.name?userProfile.name.split(" ").slice(0,2).map(part=>part[0]).join("").toUpperCase():"FS";
+  document.getElementById("profileAvatar").textContent=initials;
+  document.getElementById("profileName").textContent=displayName;
+  document.getElementById("profileMeta").textContent=`Member · ${userProfile.city}`;
+  document.getElementById("membershipName").textContent=displayName;
+  document.getElementById("membershipGym").textContent=userProfile.gym;
+  const greeting=document.getElementById("personalGreeting");
+  greeting.textContent=firstName?`${greetingForNow()}, ${firstName} `:`${greetingForNow()} `;
+  const wave=document.createElement("span");
+  wave.textContent="👋";
+  greeting.appendChild(wave);
+  document.getElementById("coachWelcome").textContent=`${greetingForNow()}${firstName?`, ${firstName}`:""}! Your glucose is steady and upper-body strength is queued. How can I help you today?`;
+}
 const savedRegion=localStorage.getItem("fitsugar-region");
 let selectedRegion=FitSugarIndia.regions[savedRegion]?savedRegion:"Pan-India Mix";
 const regionSelect=document.getElementById("regionSelect");
@@ -100,7 +148,7 @@ const staticTranslations = [
   [".nav-item[data-view='nutrition']","nutrition"],[".nav-item[data-view='progress']","progress"],
   [".nav-item[data-view='coach']","coach"],[".nav-item[data-view='membership']","membership"],
   [".nav-item[data-view='owner']","owner"],[".upgrade-card b","unlock"],[".upgrade-card p","unlockDesc"],
-  [".upgrade-card .btn","explore"],[".welcome-row h1","greeting"],[".welcome-row p","greetingSub"],
+  [".upgrade-card .btn","explore"],[".welcome-row p","greetingSub"],
   [".streak-pill b","streak"],[".streak-pill small","best"],[".hero-content .tag","todayWorkout"],
   [".hero-content h2","upper"],["[data-action='start-workout']","start"],[".glucose-card .eyebrow","glucose"],
   [".glucose-card h3","inRange"],[".status-dot","stable"],["[data-modal='glucose']","logReading"],
@@ -141,6 +189,7 @@ function translateStaticUI(){
     const old=button.querySelector("span"); if(old)old.remove();
     if(selected)button.insertAdjacentHTML("beforeend","<span>✓</span>");
   });
+  renderUserProfile();
 }
 function showView(name){
   views.forEach(v=>v.classList.toggle("active",v.id===`${name}View`));
@@ -213,6 +262,15 @@ const modalData={
   member:["Add a new member","Create a profile, assign a trainer, and start a membership plan.","Add member"]
 };
 function openModal(type,custom){
+  if(type==="profile"){
+    document.getElementById("modalContent").innerHTML=`<span class="eyebrow">YOUR PROFILE</span><h2>Make FitSugar yours</h2><p>Your name is used in greetings, Coach messages, and your membership card. It stays saved on this device.</p><form class="modal-form" id="profileForm"><label for="profileNameInput">YOUR NAME</label><input id="profileNameInput" name="name" required maxlength="40"><label for="profileCityInput">CITY</label><input id="profileCityInput" name="city" required maxlength="40"><label for="profileGymInput">GYM / FITNESS CENTRE</label><input id="profileGymInput" name="gym" required maxlength="60"><button class="btn btn-primary" type="submit">Save my profile</button></form>`;
+    document.getElementById("profileNameInput").value=userProfile.name;
+    document.getElementById("profileCityInput").value=userProfile.city;
+    document.getElementById("profileGymInput").value=userProfile.gym;
+    document.getElementById("modalBackdrop").classList.add("open");
+    document.getElementById("profileNameInput").focus();
+    return;
+  }
   let d=modalData[type]||["Exercise guide",`Step-by-step guidance for ${custom}. Keep your core braced, move with control, and stop if you feel pain.`,"Start exercise"];
   if(type==="exercise")d=["Ready to move?",`${custom} · Keep the weight controlled and breathe through every rep. Avoid locking your joints. Rest 60–90 seconds between sets.`,"Start guided session"];
   if(type==="meal")d=[`${selectedRegion} lunch alternatives`,`Choose another familiar regional meal. Calories and macros are estimates; portions should match your personal plan.`,"Save meal"];
@@ -223,7 +281,24 @@ function openModal(type,custom){
 }
 document.getElementById("modalClose").onclick=()=>document.getElementById("modalBackdrop").classList.remove("open");
 document.getElementById("modalBackdrop").onclick=e=>{if(e.target.id==="modalBackdrop")e.currentTarget.classList.remove("open")};
-document.getElementById("modalContent").addEventListener("submit",e=>{e.preventDefault();document.getElementById("modalBackdrop").classList.remove("open");toast("Done — your plan has been updated.")});
+document.getElementById("modalContent").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(e.target.id==="profileForm"){
+    const formData=new FormData(e.target);
+    userProfile={
+      name:cleanProfileValue(formData.get("name"),defaultUserProfile.name,40),
+      city:cleanProfileValue(formData.get("city"),defaultUserProfile.city,40),
+      gym:cleanProfileValue(formData.get("gym"),defaultUserProfile.gym,60)
+    };
+    localStorage.setItem("fitsugar-profile-v2",JSON.stringify(userProfile));
+    renderUserProfile();
+    document.getElementById("modalBackdrop").classList.remove("open");
+    toast(`Welcome, ${userProfile.name.split(" ")[0]}! Your profile is saved.`);
+    return;
+  }
+  document.getElementById("modalBackdrop").classList.remove("open");
+  toast("Done — your plan has been updated.");
+});
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),2600)}
 
 const coachReplies={

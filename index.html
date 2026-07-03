@@ -48,9 +48,9 @@
       </div>
 
       <div class="profile-mini">
-        <div class="avatar">AK</div>
-        <div><b>Arun Kumar</b><small>Member · Chennai</small></div>
-        <button aria-label="Profile settings">•••</button>
+        <div class="avatar" id="profileAvatar">FS</div>
+        <div><b id="profileName">FitSugar Member</b><small id="profileMeta">Member · Your city</small></div>
+        <button id="profileEditBtn" data-modal="profile" aria-label="Edit your profile">•••</button>
       </div>
     </aside>
 
@@ -75,7 +75,7 @@
         <section class="welcome-row">
           <div>
             <span class="eyebrow">FRIDAY, 3 JULY</span>
-            <h1>Good morning, Arun <span>👋</span></h1>
+            <h1 id="personalGreeting">Good morning <span>👋</span></h1>
             <p>Small steps, strong habits. Let’s make today count.</p>
           </div>
           <div class="streak-pill"><span>🔥</span><div><b>12 day streak</b><small>Your best: 18 days</small></div></div>
@@ -186,7 +186,7 @@
           <div class="chat-card">
             <div class="chat-head"><div class="coach-orb small">✦</div><div><b>FitSugar Coach</b><small><i></i> Online · Knows your plan</small></div><button>•••</button></div>
             <div class="messages" id="messages">
-              <div class="message coach"><span>✦</span><p>Good morning, Arun! Your glucose is steady and upper-body strength is queued. How can I help you today?</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>
+              <div class="message coach"><span>✦</span><p id="coachWelcome">Good morning! Your glucose is steady and upper-body strength is queued. How can I help you today?</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>
             </div>
             <div class="suggestions"><button>Pre-workout snack?</button><button>Explain today's workout</button><button>Plan my week</button></div>
             <form class="chat-input" id="chatForm"><input id="chatInput" placeholder="Ask about workouts, food, or health..." autocomplete="off"><button aria-label="Send">↑</button></form>
@@ -198,7 +198,7 @@
       <div class="view" id="membershipView">
         <section class="page-heading"><div><span class="eyebrow">MY GYM</span><h1>Membership</h1><p>Your plan, visits, payments, and trainer in one place.</p></div></section>
         <section class="membership-layout">
-          <article class="member-pass"><span>FITSUGAR PRO · MEMBER</span><div><h2>Arun Kumar</h2><p>Pulse Fitness, Adyar</p></div><div class="pass-bottom"><b>PRO ANNUAL</b><span>Valid until 28 Feb 2027</span></div><i>FS</i></article>
+          <article class="member-pass"><span>FITSUGAR PRO · MEMBER</span><div><h2 id="membershipName">FitSugar Member</h2><p id="membershipGym">Your gym</p></div><div class="pass-bottom"><b>PRO ANNUAL</b><span>Valid until 28 Feb 2027</span></div><i>FS</i></article>
           <article class="membership-info"><span class="eyebrow">CURRENT PLAN</span><h2>Pro Annual Membership</h2><div class="info-row"><span>Next payment</span><b>₹12,999 · 28 Feb 2027</b></div><div class="info-row"><span>Trainer</span><b>Priya Raman</b></div><div class="info-row"><span>Visits this month</span><b>14 of 20 goal</b></div><button class="btn btn-dark" data-modal="invoice">Download invoice</button></article>
         </section>
       </div>
