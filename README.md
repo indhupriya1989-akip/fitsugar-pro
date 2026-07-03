@@ -2,6 +2,10 @@
 
 A responsive, multi-surface product prototype for culturally aware fitness coaching and gym management in India.
 
+## Live app
+
+https://indhupriya1989-akip.github.io/fitsugar-pro/
+
 ## Run
 
 Open `landing.html` for the public sales website or `index.html` for the product. To enable installable PWA features, serve the folder:
