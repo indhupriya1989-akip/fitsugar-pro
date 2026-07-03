@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FitSugar Pro — culturally aware fitness and gym management for India." />
+  <meta name="theme-color" content="#20231f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FitSugar Pro" />
+  <title>FitSugar Pro — Fitness that fits real life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="audio.css" />
+  <link rel="stylesheet" href="install.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view="home" aria-label="FitSugar Pro home">
+        <span class="brand-mark">FS</span>
+        <span><b>FitSugar</b><small>PRO</small></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <p class="nav-label">MY FITNESS</p>
+        <button class="nav-item active" data-view="home"><span>⌂</span>Home</button>
+        <button class="nav-item" data-view="workouts"><span>◫</span>Workouts</button>
+        <button class="nav-item" data-view="nutrition"><span>◉</span>Nutrition</button>
+        <button class="nav-item" data-view="progress"><span>↗</span>Progress</button>
+        <button class="nav-item" data-view="coach"><span>✦</span>FitSugar Coach</button>
+        <p class="nav-label">MY GYM</p>
+        <button class="nav-item" data-view="membership"><span>▣</span>Membership</button>
+        <button class="nav-item" data-view="owner"><span>⌘</span>Owner Console</button>
+      </nav>
+
+      <div class="upgrade-card">
+        <span class="spark">✦</span>
+        <b>Unlock your best</b>
+        <p>Custom plans, deeper insights, zero limits.</p>
+        <button class="btn btn-light btn-small" data-modal="upgrade">Explore Pro</button>
+      </div>
+
+      <div class="profile-mini">
+        <div class="avatar">AK</div>
+        <div><b>Arun Kumar</b><small>Member · Chennai</small></div>
+        <button aria-label="Profile settings">•••</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="globalSearch" placeholder="Search workouts, food, plans..." aria-label="Search" />
+          <kbd>⌘ K</kbd>
+        </div>
+        <div class="top-actions">
+          <button class="install-app-btn" id="installAppBtn" aria-label="Install FitSugar Pro"><span>↓</span><span>Install app</span></button>
+          <button class="icon-btn audio-trigger" id="audioBtn" aria-label="Open Voice Guide" aria-expanded="false">🔊</button>
+          <button class="language-btn" id="languageBtn"><span>अ</span><b id="languageLabel">English</b><small>⌄</small></button>
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">♢<i></i></button>
+        </div>
+      </header>
+
+      <div class="view active" id="homeView">
+        <section class="welcome-row">
+          <div>
+            <span class="eyebrow">FRIDAY, 3 JULY</span>
+            <h1>Good morning, Arun <span>👋</span></h1>
+            <p>Small steps, strong habits. Let’s make today count.</p>
+          </div>
+          <div class="streak-pill"><span>🔥</span><div><b>12 day streak</b><small>Your best: 18 days</small></div></div>
+        </section>
+
+        <section class="hero-grid">
+          <article class="workout-hero">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1400&q=85" alt="Athlete training with dumbbells" />
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <span class="tag coral">TODAY'S WORKOUT</span>
+              <h2>Upper Body<br>Strength</h2>
+              <div class="hero-meta"><span>◷ 42 min</span><span>● Intermediate</span><span>⚡ 320 kcal</span></div>
+              <button class="btn btn-primary" data-action="start-workout"><span>▶</span> Start workout</button>
+            </div>
+            <div class="progress-dial"><b>3<small>/ 8</small></b><span>sessions</span></div>
+          </article>
+
+          <article class="glucose-card">
+            <div class="card-head"><div><span class="eyebrow">GLUCOSE CHECK-IN</span><h3>You're in range</h3></div><span class="status-dot">● Stable</span></div>
+            <div class="glucose-reading"><b>112</b><span>mg/dL<small>Before breakfast</small></span></div>
+            <div class="range-track"><i style="left:42%"></i></div>
+            <div class="range-labels"><span>70</span><span>Target range</span><span>180</span></div>
+            <button class="text-btn" data-modal="glucose">+ Log new reading</button>
+            <div class="tip"><span>✦</span><p><b>Coach tip</b>Your numbers look good. Today’s strength session is a great match.</p></div>
+          </article>
+        </section>
+
+        <section class="quick-stats">
+          <article><span class="stat-icon coral-bg">♟</span><div><small>ACTIVE MINUTES</small><b>38 <em>/ 45 min</em></b></div><i><u style="width:84%"></u></i></article>
+          <article><span class="stat-icon green-bg">⌁</span><div><small>STEPS</small><b>6,842 <em>/ 8,000</em></b></div><i><u style="width:72%"></u></i></article>
+          <article><span class="stat-icon violet-bg">◒</span><div><small>WATER</small><b>1.6 <em>/ 2.5 L</em></b></div><i><u style="width:64%"></u></i></article>
+          <article><span class="stat-icon amber-bg">ϟ</span><div><small>CALORIES</small><b>486 <em>kcal burned</em></b></div><i><u style="width:58%"></u></i></article>
+        </section>
+
+        <section class="section-block">
+          <div class="section-title"><div><span class="eyebrow">MADE FOR YOUR GOAL</span><h2>Your weekly plan</h2></div><button class="text-btn" data-view="workouts">View full plan →</button></div>
+          <div class="week-row" id="weekRow">
+            <button class="day done"><small>MON</small><b>29</b><span>✓</span></button>
+            <button class="day done"><small>TUE</small><b>30</b><span>✓</span></button>
+            <button class="day"><small>WED</small><b>1</b><span>◒</span></button>
+            <button class="day"><small>THU</small><b>2</b><span>—</span></button>
+            <button class="day active"><small>FRI</small><b>3</b><span>●</span></button>
+            <button class="day"><small>SAT</small><b>4</b><span>⌁</span></button>
+            <button class="day rest"><small>SUN</small><b>5</b><span>Rest</span></button>
+          </div>
+        </section>
+
+        <section class="two-col">
+          <div class="section-block meal-block">
+            <div class="section-title"><div><span class="eyebrow">FUEL YOUR DAY</span><h2>Up next</h2></div><button class="text-btn" data-view="nutrition">Full meal plan →</button></div>
+            <article class="meal-card">
+              <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=85" alt="Healthy Indian meal with lentils" />
+              <div class="meal-content"><span class="tag green">LUNCH · 1:00 PM</span><h3>Millet rice, dal & vegetable poriyal</h3><p>Balanced South Indian plate, rich in fibre and steady energy.</p><div><b>480 <small>kcal</small></b><span>P 24g</span><span>C 62g</span><span>F 14g</span></div></div>
+              <button class="round-btn" data-modal="meal">→</button>
+            </article>
+          </div>
+          <div class="section-block coach-teaser">
+            <div class="coach-orb">✦</div>
+            <span class="eyebrow">FITSUGAR COACH</span>
+            <h2>Anything on your mind?</h2>
+            <p>Ask about form, food, glucose, or make a plan that works around your day.</p>
+            <div class="prompt-chips"><button>What should I eat before training?</button><button>Make today’s workout easier</button></div>
+            <button class="btn btn-dark" data-view="coach">Ask Coach <span>→</span></button>
+          </div>
+        </section>
+
+        <div class="medical-note"><span>♡</span><p><b>Your safety matters.</b> If you have diabetes, heart or blood pressure concerns, are pregnant, or recovering from injury, consult a qualified doctor before changing your workout or diet.</p></div>
+      </div>
+
+      <div class="view" id="workoutsView">
+        <section class="page-heading"><div><span class="eyebrow">MOVE WITH CONFIDENCE</span><h1>Workout library</h1><p>Trainer-built sessions with clear form cues and safety notes.</p></div><button class="btn btn-primary" data-modal="plan">+ Build a plan</button></section>
+        <div class="filter-row" id="workoutFilters">
+          <button class="active" data-filter="all">All</button><button data-filter="chest">Chest</button><button data-filter="back">Back</button><button data-filter="legs">Legs</button><button data-filter="arms">Arms</button><button data-filter="shoulders">Shoulders</button><button data-filter="full">Full body</button>
+        </div>
+        <div class="workout-grid" id="workoutGrid"></div>
+      </div>
+
+      <div class="view" id="nutritionView">
+        <section class="page-heading"><div><span class="eyebrow">ROOTED IN YOUR REGION</span><h1>Food that feels like home</h1><p>Practical nutrition for your goals, preferences, and glucose profile.</p></div><label class="region-control"><small>YOUR STATE / UT</small><select id="regionSelect" aria-label="Select Indian state or union territory"></select></label></section>
+        <section class="nutrition-hero">
+          <div><span class="tag green">TODAY · DIABETES-FRIENDLY</span><h2>Your plate, intelligently balanced.</h2><p>Higher fibre, 82g protein, familiar ingredients—and no joyless “diet food”.</p><div><button class="btn btn-primary" data-modal="mealplan">View today's plan</button><button class="btn btn-ghost" id="swapMealBtn">Swap a meal</button></div></div>
+          <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85" alt="Colourful balanced healthy meal" />
+        </section>
+        <div class="section-title"><div><span class="eyebrow">TODAY'S MENU</span><h2>Five steady-energy meals</h2></div></div>
+        <div class="meal-timeline" id="mealTimeline"></div>
+        <div class="section-title top-gap"><div><span class="eyebrow">SMART SIPS</span><h2>Protein without the sugar rush</h2></div></div>
+        <div class="protein-grid" id="proteinGrid"></div>
+      </div>
+
+      <div class="view" id="progressView">
+        <section class="page-heading"><div><span class="eyebrow">CONSISTENCY, VISUALISED</span><h1>Your progress</h1><p>The numbers that matter—without letting them run the show.</p></div><button class="btn btn-primary" data-modal="checkin">+ Weekly check-in</button></section>
+        <div class="progress-cards">
+          <article><small>WEIGHT</small><b>74.2 <em>kg</em></b><span class="positive">↓ 2.8 kg in 8 weeks</span></article>
+          <article><small>AVG. GLUCOSE</small><b>118 <em>mg/dL</em></b><span class="positive">↓ 8 from last month</span></article>
+          <article><small>WORKOUTS</small><b>21 <em>sessions</em></b><span>84% completion</span></article>
+          <article><small>BMI</small><b>24.8</b><span class="positive">Healthy range</span></article>
+        </div>
+        <article class="chart-card">
+          <div class="card-head"><div><span class="eyebrow">8-WEEK TREND</span><h2>Weight is moving steadily</h2></div><span class="tag green">−3.6%</span></div>
+          <div class="chart-area"><div class="chart-grid"></div><svg viewBox="0 0 900 250" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff654d" stop-opacity=".28"/><stop offset="1" stop-color="#ff654d" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182 L900 250 L0 250Z"/><path class="line" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182"/></svg><div class="chart-labels"><span>May 15</span><span>May 29</span><span>Jun 12</span><span>Jun 26</span><span>Today</span></div></div>
+        </article>
+      </div>
+
+      <div class="view" id="coachView">
+        <section class="coach-page">
+          <div class="coach-intro"><div class="coach-orb large">✦</div><span class="eyebrow">YOUR ALWAYS-ON FITNESS PARTNER</span><h1>FitSugar Coach</h1><p>Practical answers tuned to your goals, food, region, and health profile.</p></div>
+          <div class="chat-card">
+            <div class="chat-head"><div class="coach-orb small">✦</div><div><b>FitSugar Coach</b><small><i></i> Online · Knows your plan</small></div><button>•••</button></div>
+            <div class="messages" id="messages">
+              <div class="message coach"><span>✦</span><p>Good morning, Arun! Your glucose is steady and upper-body strength is queued. How can I help you today?</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>
+            </div>
+            <div class="suggestions"><button>Pre-workout snack?</button><button>Explain today's workout</button><button>Plan my week</button></div>
+            <form class="chat-input" id="chatForm"><input id="chatInput" placeholder="Ask about workouts, food, or health..." autocomplete="off"><button aria-label="Send">↑</button></form>
+            <small class="ai-note">AI guidance is educational and does not replace medical advice.</small>
+          </div>
+        </section>
+      </div>
+
+      <div class="view" id="membershipView">
+        <section class="page-heading"><div><span class="eyebrow">MY GYM</span><h1>Membership</h1><p>Your plan, visits, payments, and trainer in one place.</p></div></section>
+        <section class="membership-layout">
+          <article class="member-pass"><span>FITSUGAR PRO · MEMBER</span><div><h2>Arun Kumar</h2><p>Pulse Fitness, Adyar</p></div><div class="pass-bottom"><b>PRO ANNUAL</b><span>Valid until 28 Feb 2027</span></div><i>FS</i></article>
+          <article class="membership-info"><span class="eyebrow">CURRENT PLAN</span><h2>Pro Annual Membership</h2><div class="info-row"><span>Next payment</span><b>₹12,999 · 28 Feb 2027</b></div><div class="info-row"><span>Trainer</span><b>Priya Raman</b></div><div class="info-row"><span>Visits this month</span><b>14 of 20 goal</b></div><button class="btn btn-dark" data-modal="invoice">Download invoice</button></article>
+        </section>
+      </div>
+
+      <div class="view" id="ownerView">
+        <section class="page-heading owner-heading"><div><span class="eyebrow">PULSE FITNESS · ADYAR</span><h1>Business overview</h1><p>Friday, 3 July · Here’s how your gym is moving.</p></div><div><button class="btn btn-ghost">Export report</button><button class="btn btn-primary" data-modal="member">+ Add member</button></div></section>
+        <div class="owner-stats">
+          <article><span>ACTIVE MEMBERS</span><b>428</b><small class="positive">↑ 12 this month</small></article>
+          <article><span>TODAY'S ATTENDANCE</span><b>96</b><small>22% of members</small></article>
+          <article><span>MONTHLY REVENUE</span><b>₹4.82L</b><small class="positive">↑ 8.4% vs Jun</small></article>
+          <article><span>PENDING PAYMENTS</span><b>₹38,400</b><small class="warning">26 members</small></article>
+        </div>
+        <section class="owner-grid">
+          <article class="chart-card revenue-card"><div class="card-head"><div><span class="eyebrow">REVENUE</span><h2>₹4,82,600 this month</h2></div><select><option>Last 6 months</option></select></div><div class="bar-chart"><i style="height:44%"><span>FEB</span></i><i style="height:58%"><span>MAR</span></i><i style="height:54%"><span>APR</span></i><i style="height:70%"><span>MAY</span></i><i style="height:66%"><span>JUN</span></i><i class="current" style="height:88%"><span>JUL</span></i></div></article>
+          <article class="activity-card"><div class="card-head"><div><span class="eyebrow">NEEDS ATTENTION</span><h2>Quick actions</h2></div></div><div class="action-list"><button><span class="coral-bg">₹</span><div><b>26 pending renewals</b><small>₹38,400 outstanding</small></div><em>→</em></button><button><span class="amber-bg">◷</span><div><b>8 memberships expire soon</b><small>Within the next 7 days</small></div><em>→</em></button><button><span class="violet-bg">♟</span><div><b>5 new enquiries</b><small>Waiting for follow-up</small></div><em>→</em></button></div></article>
+        </section>
+        <section class="member-table-card"><div class="section-title"><div><span class="eyebrow">MEMBERS</span><h2>Recent activity</h2></div><button class="text-btn">View all members →</button></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Plan</th><th>Trainer</th><th>Last visit</th><th>Status</th><th></th></tr></thead><tbody id="memberRows"></tbody></table></div></section>
+      </div>
+    </main>
+  </div>
+
+  <div class="language-menu" id="languageMenu">
+    <button data-lang="English">English <span>✓</span></button><button data-lang="தமிழ்">தமிழ்</button><button data-lang="हिन्दी">हिन्दी</button><button data-lang="తెలుగు">తెలుగు</button><button data-lang="മലയാളം">മലയാളം</button><button data-lang="ಕನ್ನಡ">ಕನ್ನಡ</button><button data-lang="বাংলা">বাংলা</button><button data-lang="मराठी">मराठी</button><button data-lang="ગુજરાતી">ગુજરાતી</button>
+  </div>
+  <aside class="audio-panel" id="audioPanel" aria-label="Voice Guide">
+    <div class="audio-panel-head"><div><span>🔊</span><div><b>Voice Guide</b><small id="audioLocale">English audio</small></div></div><button id="audioClose" aria-label="Close Voice Guide">×</button></div>
+    <div class="audio-status"><i id="audioPulse"></i><span id="audioStatus">Ready to listen</span></div>
+    <button class="audio-primary" id="readPageBtn"><span>▶</span><div><b>Read this screen</b><small>Hear the visible content</small></div></button>
+    <div class="audio-controls">
+      <button id="pauseAudioBtn" aria-label="Pause or resume audio">Ⅱ <small>Pause</small></button>
+      <button id="stopAudioBtn" aria-label="Stop audio">■ <small>Stop</small></button>
+    </div>
+    <label class="audio-speed"><span>Reading speed</span><output id="speedOutput">1×</output><input id="audioSpeed" type="range" min="0.7" max="1.4" value="1" step="0.1"></label>
+    <p class="audio-help">Voice availability depends on your device. FitSugar automatically chooses the closest voice for your selected language.</p>
+  </aside>
+  <div class="toast" id="toast"></div>
+  <div class="install-sheet-backdrop" id="installSheetBackdrop">
+    <section class="install-sheet" aria-labelledby="installSheetTitle">
+      <button class="install-sheet-close" id="installSheetClose" aria-label="Close installation guide">×</button>
+      <img class="install-app-icon" src="icon.svg" alt="">
+      <h2 id="installSheetTitle">Install FitSugar Pro</h2>
+      <p id="installSheetDescription">Add the app to your device for faster, full-screen access.</p>
+      <div class="install-steps" id="installSteps"></div>
+      <button class="install-native-btn" id="nativeInstallBtn">Install now</button>
+      <small class="install-secure-note">Installation requires HTTPS when deployed publicly.</small>
+    </section>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="india-foods.js"></script>
+  <script src="app.js"></script>
+  <script src="audio.js"></script>
+  <script src="install.js"></script>
+</body>
+</html>
