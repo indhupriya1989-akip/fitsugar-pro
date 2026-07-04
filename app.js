@@ -1,11 +1,18 @@
 const workouts = [
-  {name:"Dumbbell Chest Press",group:"chest",level:"Beginner",time:"3 × 12 reps",cal:"85 kcal",desc:"A stable chest builder with easy-to-follow form cues.",img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80"},
-  {name:"Goblet Squat",group:"legs",level:"Beginner",time:"4 × 10 reps",cal:"110 kcal",desc:"Build leg strength while keeping your torso upright.",img:"https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&w=800&q=80"},
-  {name:"Single-arm Row",group:"back",level:"Intermediate",time:"3 × 12 reps",cal:"90 kcal",desc:"Strong back and posture, one controlled pull at a time.",img:"https://images.unsplash.com/photo-1581009137042-c552e485697a?auto=format&fit=crop&w=800&q=80"},
-  {name:"Shoulder Press",group:"shoulders",level:"Intermediate",time:"3 × 10 reps",cal:"76 kcal",desc:"A seated press for strong, stable shoulders.",img:"https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80"},
-  {name:"Incline Walking",group:"full",level:"Beginner",time:"25 minutes",cal:"180 kcal",desc:"Low-impact cardio ideal for steady glucose support.",img:"https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=800&q=80"},
-  {name:"Battle Rope Flow",group:"arms",level:"Advanced",time:"8 × 30 sec",cal:"220 kcal",desc:"High-energy conditioning for arms, core and lungs.",img:"https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80"}
+  {name:"Dumbbell Chest Press",group:"chest",level:"Beginner",time:"3 × 12 reps",cal:"85 kcal",desc:"A stable chest builder with easy-to-follow form cues.",guide:"Keep feet planted, wrists stacked, and elbows slightly below shoulder level.",img:"assets/workouts/dumbbell-chest-press.png"},
+  {name:"Goblet Squat",group:"legs",level:"Beginner",time:"4 × 10 reps",cal:"110 kcal",desc:"Build leg strength while keeping your torso upright.",guide:"Hold one dumbbell at your chest; sit between your hips with knees tracking over toes.",img:"assets/workouts/goblet-squat.png"},
+  {name:"Single-arm Row",group:"back",level:"Intermediate",time:"3 × 12 reps",cal:"90 kcal",desc:"Strong back and posture, one controlled pull at a time.",guide:"Support one hand and knee, keep your back neutral, and pull toward your hip.",img:"assets/workouts/single-arm-row.png"},
+  {name:"Shoulder Press",group:"shoulders",level:"Intermediate",time:"3 × 10 reps",cal:"76 kcal",desc:"A seated press for strong, stable shoulders.",guide:"Use a supported bench, brace your core, and finish without shrugging.",img:"assets/workouts/shoulder-press.png"},
+  {name:"Incline Walking",group:"full",level:"Beginner",time:"25 minutes",cal:"180 kcal",desc:"Low-impact cardio ideal for steady glucose support.",guide:"Stand tall, take comfortable steps, and reduce incline before holding the rails.",img:"assets/workouts/incline-walking.png"},
+  {name:"Battle Rope Flow",group:"arms",level:"Advanced",time:"8 × 30 sec",cal:"220 kcal",desc:"High-energy conditioning for arms, core and lungs.",guide:"Keep a soft squat and neutral spine; make controlled alternating waves.",img:"assets/workouts/battle-rope-flow.png"}
 ];
+const agePlans={
+  teen:{label:"13–17 years",title:"Foundation & confidence",description:"Technique-first training with supervision, bodyweight control, and no pressure to lift heavy.",schedule:"3 activity days + daily play",focus:"Movement skills · posture · confidence",note:"Use light resistance and qualified adult supervision. Avoid one-rep-max testing."},
+  adult:{label:"18–39 years",title:"Strength & performance",description:"A balanced mix of progressive strength, cardio, mobility, and recovery for sustainable fitness.",schedule:"3 strength + 2 cardio days",focus:"Strength · stamina · mobility",note:"Add load only when every repetition stays controlled and pain-free."},
+  midlife:{label:"40–59 years",title:"Joint-smart strength",description:"Preserve muscle and bone health with controlled strength work, low-impact cardio, and longer warm-ups.",schedule:"2–3 strength + 3 walking days",focus:"Muscle · heart health · mobility",note:"Allow 48 hours between hard strength sessions and scale impact for joint comfort."},
+  senior:{label:"60+ years",title:"Active longevity",description:"Build everyday strength, balance, and walking capacity with stable positions and gradual progression.",schedule:"2 strength + 3 balance/walk days",focus:"Balance · mobility · independence",note:"Use support when needed and seek medical guidance for new symptoms or health conditions."}
+};
+let selectedAgeGroup=agePlans[localStorage.getItem("fitsugar-age-group")]?localStorage.getItem("fitsugar-age-group"):"adult";
 const meals = [
   {time:"BREAKFAST · 8:00",key:"meal1",cal:"340",protein:"18g"},
   {time:"MID-MORNING · 11:00",key:"meal2",cal:"190",protein:"10g"},
@@ -106,8 +113,20 @@ function renderWorkouts(filter="all",query=""){
   grid.innerHTML=results.map(w=>`
     <article class="workout-card">
       <div class="image-wrap"><img src="${w.img}" alt="${w.name}" loading="lazy"><span class="tag ${w.level==="Beginner"?"green":"coral"}">${w.level.toUpperCase()}</span></div>
-      <div class="card-body"><h3>${w.name}</h3><p>${w.desc}</p><button class="speak-card" aria-label="Listen to ${w.name}">🔊 Listen</button><div class="meta"><span>◷ ${w.time}</span><span>⚡ ${w.cal}</span><button class="text-btn" data-exercise="${w.name}">View guide →</button></div></div>
+      <div class="card-body"><h3>${w.name}</h3><p>${w.desc}</p><small class="age-fit">✓ ${agePlans[selectedAgeGroup].label}: ${agePlans[selectedAgeGroup].focus}</small><button class="speak-card" aria-label="Listen to ${w.name}">🔊 Listen</button><div class="meta"><span>◷ ${w.time}</span><span>⚡ ${w.cal}</span><button class="text-btn" data-exercise="${w.name}">View guide →</button></div></div>
     </article>`).join("")||`<div class="empty-state"><span>⌕</span><h3>No matching workouts</h3><p>Try a muscle group or a simpler exercise name.</p></div>`;
+}
+function renderAgePlan(){
+  const plan=agePlans[selectedAgeGroup];
+  document.getElementById("ageGroupSelect").value=selectedAgeGroup;
+  document.getElementById("agePlan").innerHTML=`<div><span class="eyebrow">${FitSugarI18n.t("agePlan")}</span><h2>${plan.title}</h2><p>${plan.description}</p></div><div class="age-plan-facts"><span><small>${FitSugarI18n.t("weeklyRhythm")}</small><b>${plan.schedule}</b></span><span><small>${FitSugarI18n.t("trainingFocus")}</small><b>${plan.focus}</b></span><p>♡ ${plan.note}</p></div>`;
+}
+function renderBeginnerGuide(){
+  document.getElementById("beginnerGuideGrid").innerHTML=workouts.filter(workout=>workout.level==="Beginner").map(workout=>`
+    <article class="beginner-card">
+      <img src="${workout.img}" alt="${workout.name} beginner form demonstration" loading="lazy">
+      <div><span class="tag green">${FitSugarI18n.t("beginner")}</span><h3>${workout.name}</h3><p>${workout.guide}</p><button class="text-btn" data-exercise="${workout.name}">${FitSugarI18n.t("openGuide")} →</button></div>
+    </article>`).join("");
 }
 function alternativesMarkup(key,items){
   const choices=items||FitSugarI18n.t(`${key}a`).split("|");
@@ -140,13 +159,17 @@ renderMeals();
 renderProteins();
 document.getElementById("memberRows").innerHTML=members.map(m=>`<tr><td>${m[0]}</td><td>${m[1]}</td><td>${m[2]}</td><td>${m[3]}</td><td><span class="status ${m[4]==="Active"?"":"due"}">${m[4]}</span></td><td>•••</td></tr>`).join("");
 renderWorkouts();
+renderAgePlan();
+renderBeginnerGuide();
 
 const views=[...document.querySelectorAll(".view")];
 const staticTranslations = [
   [".nav-label:nth-of-type(1)","myFitness"],[".nav-label:nth-of-type(2)","myGym"],
   [".nav-item[data-view='home']","home"],[".nav-item[data-view='workouts']","workouts"],
   [".nav-item[data-view='nutrition']","nutrition"],[".nav-item[data-view='progress']","progress"],
-  [".nav-item[data-view='coach']","coach"],[".nav-item[data-view='membership']","membership"],
+  [".nav-item[data-view='coach']","coach"],[".nav-item[data-view='restart']","restartPlan"],
+  [".nav-item[data-view='membership']","membership"],[".nav-item[data-view='members']","membersTab"],
+  [".nav-item[data-view='exports']","exportSales"],
   [".nav-item[data-view='owner']","owner"],[".upgrade-card b","unlock"],[".upgrade-card p","unlockDesc"],
   [".upgrade-card .btn","explore"],[".welcome-row p","greetingSub"],
   [".streak-pill b","streak"],[".streak-pill small","best"],[".hero-content .tag","todayWorkout"],
@@ -157,6 +180,7 @@ const staticTranslations = [
   [".coach-teaser h2","askMind"],[".coach-teaser p","askDesc"],[".coach-teaser .btn","askCoach"],
   [".medical-note b","safety"],["#workoutsView .page-heading h1","workoutLibrary"],
   ["#workoutsView .page-heading p","workoutDesc"],["#workoutsView [data-modal='plan']","buildPlan"],
+  ["#ageGroupLabel","ageGroup"],["#beginnerEyebrow","newToGym"],["#beginnerTitle","beginnerGuide"],["#beginnerIntro","beginnerIntro"],
   ["#workoutFilters [data-filter='all']","all"],["#workoutFilters [data-filter='chest']","chest"],
   ["#workoutFilters [data-filter='back']","back"],["#workoutFilters [data-filter='legs']","legs"],
   ["#workoutFilters [data-filter='arms']","arms"],["#workoutFilters [data-filter='shoulders']","shoulders"],
@@ -237,9 +261,17 @@ langMenu.onclick=e=>{
   langMenu.classList.remove("open");toast(`${lang} ✓`);
 };
 window.addEventListener("fitsugar:language",()=>{
-  translateStaticUI(); renderMeals(); renderProteins();
+  translateStaticUI(); renderMeals(); renderProteins(); renderAgePlan(); renderBeginnerGuide();
   const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
   renderWorkouts(activeFilter);
+});
+document.getElementById("ageGroupSelect").addEventListener("change",event=>{
+  selectedAgeGroup=event.target.value;
+  localStorage.setItem("fitsugar-age-group",selectedAgeGroup);
+  renderAgePlan();
+  const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
+  renderWorkouts(activeFilter);
+  toast(`${agePlans[selectedAgeGroup].label} training guidance loaded`);
 });
 regionSelect.addEventListener("change",()=>{
   selectedRegion=regionSelect.value;
@@ -254,7 +286,7 @@ document.querySelector("[data-action='start-workout']").onclick=()=>openModal("e
 const modalData={
   upgrade:["FitSugar Pro membership","Unlock adaptive weekly plans, full nutrition guidance, progress insights, and unlimited Coach chats.","Start 7-day free trial"],
   glucose:["Log glucose reading","Track a pre- or post-meal reading. Your fitness plan will adapt to keep movement safe and sensible.","Save reading"],
-  plan:["Build your weekly plan","Choose a goal and available days. FitSugar Coach will create a balanced plan with recovery built in.","Create my plan"],
+  plan:["Build your weekly plan","Choose a goal and available days. FitSugar Coach will create a balanced, age-aware plan with recovery built in.","Create my plan"],
   meal:["Today’s balanced lunch","Millet rice, moong dal, beans poriyal and unsweetened curd. Estimated 480 kcal, 24g protein and 12g fibre.","Mark as eaten"],
   mealplan:["Today’s meal plan","A steady-energy day based on Tamil Nadu staples, your vegetarian preference, and your weight-loss goal.","Save plan"],
   checkin:["Weekly check-in","Add your latest weight and tell us how your energy felt this week.","Save check-in"],
@@ -272,7 +304,10 @@ function openModal(type,custom){
     return;
   }
   let d=modalData[type]||["Exercise guide",`Step-by-step guidance for ${custom}. Keep your core braced, move with control, and stop if you feel pain.`,"Start exercise"];
-  if(type==="exercise")d=["Ready to move?",`${custom} · Keep the weight controlled and breathe through every rep. Avoid locking your joints. Rest 60–90 seconds between sets.`,"Start guided session"];
+  if(type==="exercise"){
+    const workout=workouts.find(item=>item.name===custom);
+    d=["Ready to move?",`${custom} · ${workout?.guide||"Keep the movement controlled and breathe through every repetition."} ${agePlans[selectedAgeGroup].note}`,"Start guided session"];
+  }
   if(type==="meal")d=[`${selectedRegion} lunch alternatives`,`Choose another familiar regional meal. Calories and macros are estimates; portions should match your personal plan.`,"Save meal"];
   if(type==="mealplan")d=[`${selectedRegion} meal plan`,`A portion-aware regional plan with vegetables, fibre and practical protein choices. Adjust it for allergies, medical needs and your clinician’s advice.`,"Save plan"];
   const mealAlternatives=type==="meal"?`<div class="modal-alternatives"><b>${FitSugarI18n.t("alternatives")}</b>${alternativesMarkup("meal3",regionAlternatives(2))}</div>`:"";
@@ -305,13 +340,15 @@ const coachReplies={
   snack:"Try a small bowl of sundal or half a banana with one tablespoon of peanut butter 45–60 minutes before training. It gives steady energy without a heavy sugar load.",
   easier:"Absolutely. I’ll swap the final superset for 10 minutes of incline walking and reduce each strength movement to two sets. You’ll still get a useful session.",
   workout:"Today is upper-body strength: chest press, single-arm row, shoulder press, and supported curls. Use a weight that leaves 2–3 comfortable reps in reserve.",
-  week:"I’d suggest three strength days, two 25-minute walks, one mobility day, and a full rest day. That supports fat loss without crowding your recovery."
+  week:"I’d suggest three strength days, two 25-minute walks, one mobility day, and a full rest day. That supports fat loss without crowding your recovery.",
+  beginner:"Start with Dumbbell Chest Press, Goblet Squat, and Incline Walking. Use light resistance, stop each set with 2–3 comfortable repetitions left, and ask a trainer to check your form.",
+  restart:"Welcome back! Since you took a break, we will restart safely with a light plan and gradually increase intensity."
 };
 function sendChat(text){
   if(!text.trim())return;const box=document.getElementById("messages");
   box.insertAdjacentHTML("beforeend",`<div class="message user"><p>${text.replace(/[<>]/g,"")}</p></div>`);
   box.scrollTop=box.scrollHeight;
-  setTimeout(()=>{const lower=text.toLowerCase();let reply=lower.includes("snack")||lower.includes("eat")?coachReplies.snack:lower.includes("easy")?coachReplies.easier:lower.includes("week")||lower.includes("plan")?coachReplies.week:coachReplies.workout;box.insertAdjacentHTML("beforeend",`<div class="message coach"><span>✦</span><p>${reply}</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>`);box.scrollTop=box.scrollHeight},450);
+  setTimeout(()=>{const lower=text.toLowerCase();let reply=lower.includes("restart")||lower.includes("break")||lower.includes("return")?coachReplies.restart:lower.includes("beginner")||lower.includes("new gym")?coachReplies.beginner:lower.includes("snack")||lower.includes("eat")?coachReplies.snack:lower.includes("easy")?coachReplies.easier:lower.includes("week")||lower.includes("plan")?coachReplies.week:coachReplies.workout;box.insertAdjacentHTML("beforeend",`<div class="message coach"><span>✦</span><p>${reply}</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>`);box.scrollTop=box.scrollHeight},450);
 }
 document.getElementById("chatForm").onsubmit=e=>{e.preventDefault();const i=document.getElementById("chatInput");sendChat(i.value);i.value=""};
 document.querySelector(".suggestions").onclick=e=>{if(e.target.tagName==="BUTTON")sendChat(e.target.textContent)};
@@ -325,4 +362,4 @@ document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key=
 document.getElementById("swapMealBtn").onclick=()=>openModal("meal","meal3");
 translateStaticUI();
 const requestedView=location.hash.replace("#","");
-if(["home","workouts","nutrition","progress","coach","membership","owner"].includes(requestedView))showView(requestedView);
+if(["home","workouts","nutrition","progress","coach","restart","membership","members","exports","owner"].includes(requestedView))showView(requestedView);
