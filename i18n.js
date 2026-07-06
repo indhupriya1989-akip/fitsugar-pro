@@ -32,7 +32,7 @@
     membershipTitle:"Membership", membershipDesc:"Your plan, visits, payments, and trainer in one place.",
     business:"Business overview", businessDesc:"Here’s how your gym is moving.", addMember:"+ Add member",
     coachIntro:"Practical answers tuned to your goals, food, region, and health profile.", online:"Online · Knows your plan",
-    restartPlan:"Restart Plan",membersTab:"Members",exportSales:"Export & Sales",
+    healthHub:"Health Hub",restartPlan:"Restart Plan",membersTab:"Members",exportSales:"Export & Sales",
     ageGroup:"AGE GROUP",agePlan:"YOUR AGE-SPECIFIC PLAN",weeklyRhythm:"WEEKLY RHYTHM",trainingFocus:"TRAINING FOCUS",
     newToGym:"NEW TO THE GYM",beginnerGuide:"Your beginner exercise guide",beginnerIntro:"Start light, learn the movement, and ask a trainer to check your form.",beginner:"BEGINNER",openGuide:"Open guide",
     meal1:"Vegetable idli + sambar", meal1d:"3 mini idlis, extra dal sambar", meal1a:"Ragi dosa + sambar|Oats vegetable upma|Pesarattu + chutney",
@@ -66,7 +66,18 @@
     mr:{restartPlan:"पुन्हा सुरू करण्याची योजना",membersTab:"सदस्य",exportSales:"निर्यात आणि विक्री",ageGroup:"वयोगट",agePlan:"तुमच्या वयानुसार योजना",weeklyRhythm:"साप्ताहिक क्रम",trainingFocus:"प्रशिक्षण लक्ष",newToGym:"जिममध्ये नवीन आहात",beginnerGuide:"नवशिक्यांसाठी व्यायाम मार्गदर्शक",beginnerIntro:"हलके सुरू करा, हालचाल शिका आणि प्रशिक्षकाकडून फॉर्म तपासा.",beginner:"नवशिक्या",openGuide:"मार्गदर्शक उघडा"},
     gu:{restartPlan:"ફરી શરૂ કરવાની યોજના",membersTab:"સભ્યો",exportSales:"નિકાસ અને વેચાણ",ageGroup:"વય જૂથ",agePlan:"તમારી વય અનુસાર યોજના",weeklyRhythm:"સાપ્તાહિક ક્રમ",trainingFocus:"તાલીમનું ધ્યાન",newToGym:"જિમમાં નવા છો",beginnerGuide:"શરૂઆત માટે કસરત માર્ગદર્શિકા",beginnerIntro:"હળવેથી શરૂ કરો, હલનચલન શીખો અને ટ્રેનર પાસે ફોર્મ તપાસાવો.",beginner:"શરૂઆત",openGuide:"માર્ગદર્શિકા ખોલો"}
   };
+  const healthHubTranslations = {
+    ta:{healthHub:"ஆரோக்கிய மையம்"},
+    hi:{healthHub:"स्वास्थ्य केंद्र"},
+    te:{healthHub:"ఆరోగ్య కేంద్రం"},
+    ml:{healthHub:"ആരോഗ്യ കേന്ദ്രം"},
+    kn:{healthHub:"ಆರೋಗ್ಯ ಕೇಂದ್ರ"},
+    bn:{healthHub:"স্বাস্থ্য কেন্দ্র"},
+    mr:{healthHub:"आरोग्य केंद्र"},
+    gu:{healthHub:"આરોગ્ય કેન્દ્ર"}
+  };
   Object.entries(featureTranslations).forEach(([language,strings])=>Object.assign(translations[language],strings));
+  Object.entries(healthHubTranslations).forEach(([language,strings])=>Object.assign(translations[language],strings));
 
   const requestedLanguage = new URLSearchParams(location.search).get("lang");
   const supportedCodes = Object.values(languages).map(language=>language.code);

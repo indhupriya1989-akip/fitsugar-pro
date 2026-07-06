@@ -197,7 +197,7 @@ const staticTranslations = [
   [".nav-label:nth-of-type(1)","myFitness"],[".nav-label:nth-of-type(2)","myGym"],
   [".nav-item[data-view='home']","home"],[".nav-item[data-view='workouts']","workouts"],
   [".nav-item[data-view='nutrition']","nutrition"],[".nav-item[data-view='progress']","progress"],
-  [".nav-item[data-view='coach']","coach"],[".nav-item[data-view='restart']","restartPlan"],
+  [".nav-item[data-view='health']","healthHub"],["#healthHubTitle","healthHub"],[".nav-item[data-view='coach']","coach"],[".nav-item[data-view='restart']","restartPlan"],
   [".nav-item[data-view='membership']","membership"],[".nav-item[data-view='members']","membersTab"],
   [".nav-item[data-view='exports']","exportSales"],
   [".nav-item[data-view='owner']","owner"],[".upgrade-card b","unlock"],[".upgrade-card p","unlockDesc"],
@@ -409,4 +409,4 @@ document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key=
 document.getElementById("swapMealBtn").onclick=()=>openModal("meal","meal3");
 translateStaticUI();
 const requestedView=location.hash.replace("#","");
-if(["home","workouts","nutrition","progress","coach","restart","membership","members","exports","owner"].includes(requestedView))showView(requestedView);
+if(["home","workouts","nutrition","progress","health","coach","restart","membership","members","exports","owner"].includes(requestedView))showView(requestedView);

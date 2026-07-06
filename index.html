@@ -13,9 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20" />
-  <link rel="stylesheet" href="audio.css?v=20" />
-  <link rel="stylesheet" href="install.css?v=20" />
+  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="audio.css?v=22" />
+  <link rel="stylesheet" href="install.css?v=22" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
@@ -34,6 +34,7 @@
         <button class="nav-item" data-view="workouts"><span>◫</span>Workouts</button>
         <button class="nav-item" data-view="nutrition"><span>◉</span>Nutrition</button>
         <button class="nav-item" data-view="progress"><span>↗</span>Progress</button>
+        <button class="nav-item" data-view="health"><span>♡</span>Health Hub</button>
         <button class="nav-item" data-view="coach"><span>✦</span>FitSugar Coach</button>
         <button class="nav-item" data-view="restart"><span>↻</span>Restart Plan</button>
         <p class="nav-label">MY GYM</p>
@@ -100,18 +101,18 @@
 
           <article class="glucose-card">
             <div class="card-head"><div><span class="eyebrow">GLUCOSE CHECK-IN</span><h3>You're in range</h3></div><span class="status-dot">● Stable</span></div>
-            <div class="glucose-reading"><b>112</b><span>mg/dL<small>Before breakfast</small></span></div>
+            <div class="glucose-reading"><b id="homeGlucoseValue">112</b><span>mg/dL<small id="homeGlucoseContext">Before breakfast</small></span></div>
             <div class="range-track"><i style="left:42%"></i></div>
             <div class="range-labels"><span>70</span><span>Target range</span><span>180</span></div>
-            <button class="text-btn" data-modal="glucose">+ Log new reading</button>
+            <button class="text-btn" data-view="health">+ Log new reading</button>
             <div class="tip"><span>✦</span><p><b>Coach tip</b>Your numbers look good. Today’s strength session is a great match.</p></div>
           </article>
         </section>
 
         <section class="quick-stats">
           <article><span class="stat-icon coral-bg">♟</span><div><small>ACTIVE MINUTES</small><b>38 <em>/ 45 min</em></b></div><i><u style="width:84%"></u></i></article>
-          <article><span class="stat-icon green-bg">⌁</span><div><small>STEPS</small><b>6,842 <em>/ 8,000</em></b></div><i><u style="width:72%"></u></i></article>
-          <article><span class="stat-icon violet-bg">◒</span><div><small>WATER</small><b>1.6 <em>/ 2.5 L</em></b></div><i><u style="width:64%"></u></i></article>
+          <article id="homeStepsCard"><span class="stat-icon green-bg">⌁</span><div><small>STEPS</small><b><span id="homeStepsValue">6,842</span> <em>/ 8,000</em></b></div><i><u id="homeStepsBar" style="width:72%"></u></i></article>
+          <article id="homeWaterCard"><span class="stat-icon violet-bg">◒</span><div><small>WATER</small><b><span id="homeWaterValue">1.6</span> <em>/ 2.5 L</em></b></div><i><u id="homeWaterBar" style="width:64%"></u></i></article>
           <article><span class="stat-icon amber-bg">ϟ</span><div><small>CALORIES</small><b>486 <em>kcal burned</em></b></div><i><u style="width:58%"></u></i></article>
         </section>
 
@@ -151,7 +152,7 @@
       </div>
 
       <div class="view" id="workoutsView">
-        <section class="page-heading"><div><span class="eyebrow">MOVE WITH CONFIDENCE</span><h1>Workout library</h1><p>Trainer-built sessions with clear form cues and safety notes.</p></div><div class="workout-controls"><label class="age-control"><small id="ageGroupLabel">AGE GROUP</small><select id="ageGroupSelect" aria-label="Select age group"><option value="teen">13–17 years</option><option value="adult" selected>18–39 years</option><option value="midlife">40–59 years</option><option value="senior">60+ years</option></select></label><button class="btn btn-primary" data-modal="plan">+ Build a plan</button></div></section>
+        <section class="page-heading"><div><span class="eyebrow">MOVE WITH CONFIDENCE</span><h1>Workout library</h1><p>Trainer-built sessions with clear form cues and safety notes.</p></div><div class="workout-controls"><label class="age-control"><small id="ageGroupLabel">AGE GROUP</small><select id="ageGroupSelect" aria-label="Select age group"><option value="teen">13–17 years</option><option value="adult" selected>18–39 years</option><option value="midlife">40–59 years</option><option value="senior">60+ years</option></select></label><button class="btn btn-primary" data-view="health">+ Build a plan</button></div></section>
         <section class="age-plan" id="agePlan" aria-live="polite"></section>
         <section class="active-restart-strip" id="activeRestartStrip" hidden aria-live="polite"></section>
         <div class="filter-row" id="workoutFilters">
@@ -173,18 +174,66 @@
       </div>
 
       <div class="view" id="progressView">
-        <section class="page-heading"><div><span class="eyebrow">CONSISTENCY, VISUALISED</span><h1>Your progress</h1><p>The numbers that matter—without letting them run the show.</p></div><button class="btn btn-primary" data-modal="checkin">+ Weekly check-in</button></section>
+        <section class="page-heading"><div><span class="eyebrow">CONSISTENCY, VISUALISED</span><h1>Your progress</h1><p>The numbers that matter—without letting them run the show.</p></div><button class="btn btn-primary" data-view="health">+ Weekly check-in</button></section>
         <div class="progress-cards">
-          <article><small>WEIGHT</small><b>74.2 <em>kg</em></b><span class="positive">↓ 2.8 kg in 8 weeks</span></article>
-          <article><small>AVG. GLUCOSE</small><b>118 <em>mg/dL</em></b><span class="positive">↓ 8 from last month</span></article>
+          <article><small>WEIGHT</small><b><span id="progressWeightValue">74.2</span> <em>kg</em></b><span class="positive" id="progressWeightNote">Track your current weight</span></article>
+          <article><small>AVG. GLUCOSE</small><b><span id="progressGlucoseValue">118</span> <em>mg/dL</em></b><span class="positive" id="progressGlucoseNote">Recent average</span></article>
           <article><small>WORKOUTS</small><b>21 <em>sessions</em></b><span>84% completion</span></article>
-          <article><small>BMI</small><b>24.8</b><span class="positive">Healthy range</span></article>
+          <article><small>BMI</small><b id="progressBmiValue">24.8</b><span class="positive" id="progressBmiNote">Healthy range</span></article>
         </div>
         <article class="chart-card">
           <div class="card-head"><div><span class="eyebrow">8-WEEK TREND</span><h2>Weight is moving steadily</h2></div><span class="tag green">−3.6%</span></div>
           <div class="chart-area"><div class="chart-grid"></div><svg viewBox="0 0 900 250" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff654d" stop-opacity=".28"/><stop offset="1" stop-color="#ff654d" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182 L900 250 L0 250Z"/><path class="line" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182"/></svg><div class="chart-labels"><span>May 15</span><span>May 29</span><span>Jun 12</span><span>Jun 26</span><span>Today</span></div></div>
         </article>
         <section class="workout-history-card"><div class="section-title"><div><span class="eyebrow">WORKOUT HISTORY</span><h2>Recent guided sessions</h2></div></div><div id="workoutHistoryList"></div></section>
+      </div>
+
+      <div class="view" id="healthView">
+        <section class="page-heading"><div><span class="eyebrow">YOUR HEALTH TOOLKIT</span><h1 id="healthHubTitle">Health Hub</h1><p>Registration, body metrics, diabetes, activity, reminders, photos, and personalised plans in one place.</p></div><span class="device-private">🔒 Saved on this device</span></section>
+        <div class="core-feature-grid">
+          <section class="core-card account-card" id="accountCard"></section>
+          <section class="core-card metrics-card">
+            <div class="core-card-head"><span>◎</span><div><b>Body profile & BMI</b><small>Height, weight, age and goal</small></div></div>
+            <form class="core-form body-profile-form" id="bodyProfileForm">
+              <label>Height (cm)<input type="number" name="height" min="100" max="250" required></label>
+              <label>Weight (kg)<input type="number" name="weight" min="25" max="300" step="0.1" required></label>
+              <label>Age<input type="number" name="age" min="13" max="100" required></label>
+              <label>Goal<select name="goal"><option value="loss">Weight loss</option><option value="gain">Weight gain</option><option value="maintain">Maintain weight</option><option value="glucose">Improve glucose control</option></select></label>
+              <button class="btn btn-primary" type="submit">Calculate & save</button>
+            </form>
+            <div class="bmi-result" id="bmiResult"></div>
+          </section>
+          <section class="core-card diabetes-card">
+            <div class="core-card-head"><span>◇</span><div><b>Diabetes tracking</b><small>Record and review glucose readings</small></div></div>
+            <form class="core-form glucose-log-form" id="glucoseLogForm">
+              <label>Reading (mg/dL)<input type="number" name="reading" min="30" max="600" required></label>
+              <label>Timing<select name="context"><option>Fasting</option><option>Before meal</option><option>2 hours after meal</option><option>Bedtime</option></select></label>
+              <button class="btn btn-primary" type="submit">Save reading</button>
+            </form>
+            <div class="glucose-summary" id="glucoseSummary"></div>
+            <div class="mini-log" id="glucoseHistory"></div>
+          </section>
+          <section class="core-card smart-plan-card">
+            <div class="core-card-head"><span>✦</span><div><b>Smart recommendations</b><small>Goal, BMI, age, glucose and restart-aware</small></div></div>
+            <div id="smartRecommendation"></div>
+          </section>
+          <section class="core-card activity-card-core">
+            <div class="core-card-head"><span>⌁</span><div><b>Daily activity</b><small>Water reminder and step counter</small></div></div>
+            <div class="daily-trackers">
+              <div class="tracker-block"><div><b>Water</b><strong id="waterTrackerValue">0 / 2500 ml</strong></div><div class="tracker-actions"><button type="button" data-water="-250">−</button><button type="button" data-water="250">+ 250 ml</button></div><label>Reminder<select id="waterReminderInterval"><option value="0">Off</option><option value="30">Every 30 min</option><option value="60">Every 60 min</option><option value="90">Every 90 min</option></select></label></div>
+              <div class="tracker-block"><div><b>Steps</b><strong id="stepTrackerValue">0 / 8000</strong></div><form id="manualStepsForm"><input type="number" name="steps" min="1" max="100000" placeholder="Add steps" required><button type="submit">Add</button></form><button class="motion-btn" id="connectMotionBtn" type="button">Connect phone motion</button><small id="motionStatus">Manual tracking ready</small></div>
+            </div>
+          </section>
+          <section class="core-card photos-card">
+            <div class="core-card-head"><span>▧</span><div><b>Progress photos</b><small>Private, device-only photo timeline</small></div></div>
+            <label class="photo-upload">+ Add progress photo<input id="progressPhotoInput" type="file" accept="image/*" capture="environment"></label>
+            <div class="progress-photo-grid" id="progressPhotoGrid"></div>
+          </section>
+          <section class="core-card video-card-core">
+            <div class="core-card-head"><span>▶</span><div><b>Workout video library</b><small>Open exercise demonstrations</small></div></div>
+            <div class="core-video-grid" id="coreVideoGrid"></div>
+          </section>
+        </div>
       </div>
 
       <div class="view" id="coachView">
@@ -309,13 +358,14 @@
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div>
   </div>
-  <script src="i18n.js?v=20"></script>
-  <script src="india-foods.js?v=20"></script>
-  <script src="app.js?v=20"></script>
-  <script src="workout.js?v=20"></script>
-  <script src="restart.js?v=20"></script>
-  <script src="business.js?v=20"></script>
-  <script src="audio.js?v=20"></script>
-  <script src="install.js?v=20"></script>
+  <script src="i18n.js?v=22"></script>
+  <script src="india-foods.js?v=22"></script>
+  <script src="app.js?v=22"></script>
+  <script src="workout.js?v=22"></script>
+  <script src="restart.js?v=22"></script>
+  <script src="business.js?v=22"></script>
+  <script src="core.js?v=22"></script>
+  <script src="audio.js?v=22"></script>
+  <script src="install.js?v=22"></script>
 </body>
 </html>
