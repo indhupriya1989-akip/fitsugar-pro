@@ -27,12 +27,12 @@
     const years=Math.floor(days/365);return `${years} year${years===1?"":"s"}`;
   }
   function restartRule(days){
-    if(days<=3)return{key:"days",level:"Light continuation",title:"Continue your plan safely",summary:"Continue the same plan with a longer, light warm-up.",intensity:"90–100% of prior working level",needsHealth:false,days:["Day 1 · 10-minute mobility warm-up + usual plan","Day 2 · Easy walk or recovery","Day 3 · Usual plan with controlled effort"]};
-    if(days<14)return{key:"week",level:"Reduced intensity",title:"Return at 80% intensity",summary:"Reduce workout intensity by 20% for the first week.",intensity:"80% of prior working level",needsHealth:false,days:["Day 1 · Full-body strength at 80%","Day 2 · 25-minute easy walk","Day 3 · Mobility and recovery","Day 4 · Strength at 80%","Day 5 · Easy cardio"]};
-    if(days<60)return{key:"month",level:"Beginner reset",title:"One-week beginner reset",summary:"Use beginner-friendly workouts for one week before progressing.",intensity:"Light · 2 sets per exercise",needsHealth:false,days:["Day 1 · Goblet squat + chest press","Day 2 · 20-minute walk + stretch","Day 3 · Rest","Day 4 · Row + supported shoulder press","Day 5 · Incline walk","Weekend · Mobility or rest"]};
-    if(days<150)return{key:"threeMonths",level:"Foundation restart",title:"Rebuild movement first",summary:"Restart with mobility, walking, stretching, and light strength training.",intensity:"Very light · conversational pace",needsHealth:false,days:["Day 1 · Mobility + 15-minute walk","Day 2 · Light full-body strength","Day 3 · Stretching and balance","Day 4 · 20-minute walk","Day 5 · Light strength","Weekend · Gentle activity or rest"]};
-    if(days<365)return{key:"sixMonths",level:"Health-reviewed restart",title:"Health update before progression",summary:"Review weight, injuries, diabetes/BP status, and other health changes before training.",intensity:"Assessment first · very light",needsHealth:true,days:["Day 1 · Health check + mobility","Day 2 · 15-minute easy walk","Day 3 · Rest or stretching","Day 4 · Trainer-supervised light strength","Day 5 · Balance + mobility","Weekend · Recovery"]};
-    return{key:"year",level:"Fresh beginner",title:"Start as a fresh beginner",summary:"Begin again with fundamentals and medical clearance when health risks apply.",intensity:"Beginner · supervised where possible",needsHealth:true,days:["Day 1 · Health and movement assessment","Day 2 · 10–15 minute walk","Day 3 · Mobility and balance","Day 4 · Trainer-supervised beginner strength","Day 5 · Rest","Weekend · Gentle walk and stretching"]};
+    if(days<=3)return{key:"days",level:"Light continuation",title:"Continue your plan safely",summary:"Continue the same plan with a longer, light warm-up.",intensity:"90–100% of prior working level",intensityFactor:1,needsHealth:false,days:["Day 1 · 10-minute mobility warm-up + usual plan","Day 2 · Easy walk or recovery","Day 3 · Usual plan with controlled effort"]};
+    if(days<14)return{key:"week",level:"Reduced intensity",title:"Return at 80% intensity",summary:"Reduce workout intensity by 20% for the first week.",intensity:"80% of prior working level",intensityFactor:.8,needsHealth:false,days:["Day 1 · Full-body strength at 80%","Day 2 · 25-minute easy walk","Day 3 · Mobility and recovery","Day 4 · Strength at 80%","Day 5 · Easy cardio"]};
+    if(days<60)return{key:"month",level:"Beginner reset",title:"One-week beginner reset",summary:"Use beginner-friendly workouts for one week before progressing.",intensity:"Light · 2 sets per exercise",intensityFactor:.6,needsHealth:false,days:["Day 1 · Goblet squat + chest press","Day 2 · 20-minute walk + stretch","Day 3 · Rest","Day 4 · Row + supported shoulder press","Day 5 · Incline walk","Weekend · Mobility or rest"]};
+    if(days<150)return{key:"threeMonths",level:"Foundation restart",title:"Rebuild movement first",summary:"Restart with mobility, walking, stretching, and light strength training.",intensity:"Very light · conversational pace",intensityFactor:.5,needsHealth:false,days:["Day 1 · Mobility + 15-minute walk","Day 2 · Light full-body strength","Day 3 · Stretching and balance","Day 4 · 20-minute walk","Day 5 · Light strength","Weekend · Gentle activity or rest"]};
+    if(days<365)return{key:"sixMonths",level:"Health-reviewed restart",title:"Health update before progression",summary:"Review weight, injuries, diabetes/BP status, and other health changes before training.",intensity:"Assessment first · very light",intensityFactor:.4,needsHealth:true,days:["Day 1 · Health check + mobility","Day 2 · 15-minute easy walk","Day 3 · Rest or stretching","Day 4 · Trainer-supervised light strength","Day 5 · Balance + mobility","Weekend · Recovery"]};
+    return{key:"year",level:"Fresh beginner",title:"Start as a fresh beginner",summary:"Begin again with fundamentals and medical clearance when health risks apply.",intensity:"Beginner · supervised where possible",intensityFactor:.35,needsHealth:true,days:["Day 1 · Health and movement assessment","Day 2 · 10–15 minute walk","Day 3 · Mobility and balance","Day 4 · Trainer-supervised beginner strength","Day 5 · Rest","Weekend · Gentle walk and stretching"]};
   }
   function doctorAdvice(days){
     const text=restartData.healthChanges.toLowerCase();
@@ -43,7 +43,10 @@
     const days=daysSince(restartData.lastWorkoutDate);
     const rule=restartRule(days);
     const output=document.getElementById("restartPlanOutput");
-    output.innerHTML=`<span class="restart-welcome">↻ Welcome back</span><h2>${rule.title}</h2><p class="restart-coach">${coachMessage}</p><div class="restart-summary-grid"><span><small>LAST WORKOUT</small><b>${new Date(`${restartData.lastWorkoutDate}T00:00:00`).toLocaleDateString()}</b></span><span><small>BREAK DURATION</small><b>${breakLabel(days)}</b></span><span><small>CURRENT WEIGHT</small><b>${escapeHtml(restartData.weight)} kg</b></span><span><small>CURRENT GOAL</small><b>${escapeHtml(restartData.goal)}</b></span><span><small>RESTART LEVEL</small><b>${rule.level}</b></span><span><small>INTENSITY</small><b>${rule.intensity}</b></span></div><div class="health-summary"><b>Health changes</b><p>${escapeHtml(restartData.healthChanges||"No new health changes reported.")}</p></div><div class="safe-week"><b>Safe weekly plan</b>${rule.days.map(item=>`<span>✓ ${item}</span>`).join("")}</div><p class="restart-medical-note">♡ ${doctorAdvice(days)}</p>${days>=90?'<span class="trainer-alert-state" id="trainerAlertState">Trainer alert will be created when this plan is saved.</span>':""}`;
+    let active=null;
+    try{active=JSON.parse(localStorage.getItem("fitsugar-active-restart")||"null")}catch(error){}
+    const applied=active&&active.ruleKey===rule.key;
+    output.innerHTML=`<span class="restart-welcome">↻ Welcome back</span><h2>${rule.title}</h2><p class="restart-coach">${coachMessage}</p><div class="restart-summary-grid"><span><small>LAST WORKOUT</small><b>${new Date(`${restartData.lastWorkoutDate}T00:00:00`).toLocaleDateString()}</b></span><span><small>BREAK DURATION</small><b>${breakLabel(days)}</b></span><span><small>CURRENT WEIGHT</small><b>${escapeHtml(restartData.weight)} kg</b></span><span><small>CURRENT GOAL</small><b>${escapeHtml(restartData.goal)}</b></span><span><small>RESTART LEVEL</small><b>${rule.level}</b></span><span><small>INTENSITY</small><b>${rule.intensity}</b></span></div><div class="health-summary"><b>Health changes</b><p>${escapeHtml(restartData.healthChanges||"No new health changes reported.")}</p></div><div class="safe-week"><b>Safe weekly plan</b>${rule.days.map(item=>`<span>✓ ${item}</span>`).join("")}</div><p class="restart-medical-note">♡ ${doctorAdvice(days)}</p>${days>=90?'<span class="trainer-alert-state" id="trainerAlertState">Trainer alert will be created when this plan is saved.</span>':""}${applied?'<div class="restart-applied"><b>✓ Safe restart mode applied</b><span>Your workout prescriptions now match this restart level.</span><button class="btn btn-primary" data-view="workouts">Open adjusted workouts →</button></div>':""}`;
     renderHomeBanner(days,rule);
   }
   function renderHomeBanner(days,rule){
@@ -79,6 +82,26 @@
     if(state){state.textContent="✓ In-app trainer alert created";state.classList.add("sent")}
     window.dispatchEvent(new CustomEvent("fitsugar:trainer-alert"));
   }
+  function applyRestartPlan(days,rule){
+    let previous=null;
+    try{previous=JSON.parse(localStorage.getItem("fitsugar-active-restart")||"null")}catch(error){}
+    const plan={
+      createdAt:new Date().toISOString(),
+      lastWorkoutDate:restartData.lastWorkoutDate,
+      breakDays:days,
+      breakDuration:breakLabel(days),
+      ruleKey:rule.key,
+      level:rule.level,
+      title:rule.title,
+      summary:rule.summary,
+      intensity:rule.intensity,
+      intensityFactor:rule.intensityFactor,
+      safeWeek:rule.days,
+      completedSessions:previous?.ruleKey===rule.key?(previous.completedSessions||0):0
+    };
+    localStorage.setItem("fitsugar-active-restart",JSON.stringify(plan));
+    window.dispatchEvent(new CustomEvent("fitsugar:restart-applied",{detail:plan}));
+  }
   document.getElementById("restartForm").addEventListener("input",event=>{
     readForm();
     const healthField=document.getElementById("healthChanges");
@@ -98,13 +121,19 @@
       return;
     }
     localStorage.setItem("fitsugar-restart-profile",JSON.stringify(restartData));
+    applyRestartPlan(days,rule);
     renderPlan();
     if(days>=90&&document.getElementById("trainerAlertConsent").checked)createTrainerAlert(days);
     document.getElementById("coachWelcome").textContent=coachMessage;
-    toast("Safe restart plan saved.");
+    toast("Safe restart plan applied to your workouts.");
   });
   document.addEventListener("click",event=>{
     if(event.target.closest("[data-open-restart]"))showView("restart");
+  });
+  window.addEventListener("fitsugar:workout-completed",()=>{
+    try{restartData={...restartData,...JSON.parse(localStorage.getItem("fitsugar-restart-profile")||"{}")}}catch(error){}
+    syncForm();
+    renderPlan();
   });
   window.FitSugarRestart={
     openForMember(member){

@@ -106,15 +106,44 @@ function syncHomeMeal(){
   document.querySelector(".meal-card p").textContent=regionMealDescription(2);
 }
 
+function activeRestartPlan(){
+  try{return JSON.parse(localStorage.getItem("fitsugar-active-restart")||"null")}catch(error){return null}
+}
+function adjustedWorkoutTime(workout,plan=activeRestartPlan()){
+  if(!plan||!plan.intensityFactor||plan.intensityFactor>=1)return workout.time;
+  const sets=workout.time.match(/^(\d+)\s*×\s*(.+)$/);
+  if(sets)return`${Math.max(1,Math.ceil(Number(sets[1])*plan.intensityFactor))} × ${sets[2]}`;
+  const minutes=workout.time.match(/^(\d+)\s*minutes?$/i);
+  if(minutes)return`${Math.max(10,Math.round(Number(minutes[1])*plan.intensityFactor/5)*5)} minutes`;
+  return workout.time;
+}
+function workoutRestartState(workout,plan=activeRestartPlan()){
+  const foundation=plan&&["month","threeMonths","sixMonths","year"].includes(plan.ruleKey);
+  return{
+    blocked:Boolean(foundation&&workout.level==="Advanced"),
+    prescription:adjustedWorkoutTime(workout,plan),
+    note:plan?`${plan.level} · ${Math.round(plan.intensityFactor*100)}% starting intensity`:`${agePlans[selectedAgeGroup].label}: ${agePlans[selectedAgeGroup].focus}`
+  };
+}
+function renderActiveRestartStrip(){
+  const strip=document.getElementById("activeRestartStrip");
+  const plan=activeRestartPlan();
+  if(!plan){strip.hidden=true;strip.innerHTML="";return}
+  strip.hidden=false;
+  strip.innerHTML=`<div><span>↻</span><div><b>${plan.level} is active</b><small>${plan.breakDuration} break · ${plan.intensity} · ${plan.completedSessions||0} restart workouts completed</small></div></div><div><button class="text-btn" data-view="restart">Review plan</button><button class="text-btn" data-clear-restart>Finish restart mode</button></div>`;
+}
 function renderWorkouts(filter="all",query=""){
   const grid=document.getElementById("workoutGrid");
   const normalized=query.trim().toLowerCase();
+  const restartPlan=activeRestartPlan();
   const results=workouts.filter(w=>(filter==="all"||w.group===filter)&&(!normalized||`${w.name} ${w.desc} ${w.group} ${w.level}`.toLowerCase().includes(normalized)));
-  grid.innerHTML=results.map(w=>`
-    <article class="workout-card">
+  grid.innerHTML=results.map(w=>{
+    const restart=workoutRestartState(w,restartPlan);
+    return`
+    <article class="workout-card ${restart.blocked?"workout-deferred":""}">
       <div class="image-wrap"><img src="${w.img}" alt="${w.name}" loading="lazy"><span class="tag ${w.level==="Beginner"?"green":"coral"}">${w.level.toUpperCase()}</span></div>
-      <div class="card-body"><h3>${w.name}</h3><p>${w.desc}</p><small class="age-fit">✓ ${agePlans[selectedAgeGroup].label}: ${agePlans[selectedAgeGroup].focus}</small><button class="speak-card" aria-label="Listen to ${w.name}">🔊 Listen</button><div class="meta"><span>◷ ${w.time}</span><span>⚡ ${w.cal}</span><button class="text-btn" data-exercise="${w.name}">View guide →</button></div></div>
-    </article>`).join("")||`<div class="empty-state"><span>⌕</span><h3>No matching workouts</h3><p>Try a muscle group or a simpler exercise name.</p></div>`;
+      <div class="card-body"><h3>${w.name}</h3><p>${w.desc}</p><small class="age-fit">${restart.blocked?"○ Later phase":"✓"} ${restart.note}</small><button class="speak-card" aria-label="Listen to ${w.name}">🔊 Listen</button><div class="meta"><span>◷ ${restart.prescription}</span><span>⚡ ${w.cal}</span>${restart.blocked?'<button class="text-btn" disabled title="Available after your foundation restart phase">Build up first</button>':`<button class="text-btn" data-exercise="${w.name}">Start guide →</button>`}</div></div>
+    </article>`}).join("")||`<div class="empty-state"><span>⌕</span><h3>No matching workouts</h3><p>Try a muscle group or a simpler exercise name.</p></div>`;
 }
 function renderAgePlan(){
   const plan=agePlans[selectedAgeGroup];
@@ -161,6 +190,7 @@ document.getElementById("memberRows").innerHTML=members.map(m=>`<tr><td>${m[0]}<
 renderWorkouts();
 renderAgePlan();
 renderBeginnerGuide();
+renderActiveRestartStrip();
 
 const views=[...document.querySelectorAll(".view")];
 const staticTranslations = [
@@ -242,6 +272,13 @@ document.addEventListener("click",e=>{
     foodChoice.classList.add("selected");
     toast(`${FitSugarI18n.t("selected")}: ${foodChoice.dataset.foodChoice}`);
   }
+  if(e.target.closest("[data-clear-restart]")){
+    localStorage.removeItem("fitsugar-active-restart");
+    renderActiveRestartStrip();
+    const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
+    renderWorkouts(activeFilter);
+    toast("Restart mode finished. Your regular workout plan is restored.");
+  }
 });
 document.getElementById("workoutFilters").addEventListener("click",e=>{
   if(!e.target.dataset.filter)return;
@@ -262,6 +299,16 @@ langMenu.onclick=e=>{
 };
 window.addEventListener("fitsugar:language",()=>{
   translateStaticUI(); renderMeals(); renderProteins(); renderAgePlan(); renderBeginnerGuide();
+  const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
+  renderWorkouts(activeFilter);
+});
+window.addEventListener("fitsugar:restart-applied",()=>{
+  renderActiveRestartStrip();
+  const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
+  renderWorkouts(activeFilter);
+});
+window.addEventListener("fitsugar:workout-completed",()=>{
+  renderActiveRestartStrip();
   const activeFilter=document.querySelector("#workoutFilters button.active")?.dataset.filter||"all";
   renderWorkouts(activeFilter);
 });
