@@ -12,11 +12,23 @@
   const localeLabel = document.getElementById("audioLocale");
   let synthesis = null;
   let utterance = null;
+  let fallbackAudio = null;
 
   const locales = {
     en: ["en-IN", "English"], ta: ["ta-IN", "தமிழ்"], hi: ["hi-IN", "हिन्दी"],
     te: ["te-IN", "తెలుగు"], ml: ["ml-IN", "മലയാളം"], kn: ["kn-IN", "ಕನ್ನಡ"],
     bn: ["bn-IN", "বাংলা"], mr: ["mr-IN", "मराठी"], gu: ["gu-IN", "ગુજરાતી"]
+  };
+  const builtInAudio = {
+    hi: {
+      home:"assets/audio/hi/home.mp3", workouts:"assets/audio/hi/workouts.mp3",
+      nutrition:"assets/audio/hi/nutrition.mp3", progress:"assets/audio/hi/progress.mp3",
+      health:"assets/audio/hi/health.mp3", coach:"assets/audio/hi/coach.mp3",
+      restart:"assets/audio/hi/restart.mp3", business:"assets/audio/hi/business.mp3",
+      "card-workout":"assets/audio/hi/card-workout.mp3", "card-meal":"assets/audio/hi/card-meal.mp3",
+      "card-protein":"assets/audio/hi/card-protein.mp3", "card-coach":"assets/audio/hi/card-coach.mp3",
+      "card-modal":"assets/audio/hi/card-modal.mp3", generic:"assets/audio/hi/generic.mp3"
+    }
   };
 
   const copy = {
@@ -75,7 +87,7 @@
     hi: {
       title:"आवाज़ मार्गदर्शिका", audio:"हिन्दी ऑडियो", ready:"सुनने के लिए तैयार", languageReady:"हिन्दी में सुनने के लिए तैयार",
       read:"यह स्क्रीन पढ़ें", hear:"स्क्रीन की जानकारी सुनें", pause:"रोकें", resume:"जारी रखें", stop:"बंद करें",
-      speed:"पढ़ने की गति", help:"FitSugar आपके डिवाइस पर उपलब्ध सबसे उपयुक्त हिन्दी आवाज़ चुनता है।",
+      speed:"पढ़ने की गति", help:"हिन्दी आवाज़ FitSugar में शामिल है और बिना अलग वॉइस इंस्टॉल किए चलेगी।",
       unsupported:"इस ब्राउज़र में ऑडियो उपलब्ध नहीं है", unavailable:"इस डिवाइस पर आवाज़ मार्गदर्शिका उपलब्ध नहीं है।",
       nothing:"इस स्क्रीन पर पढ़ने के लिए कुछ नहीं है", playing:"ऑडियो चल रहा है…", finished:"पूरा हुआ। फिर से सुनने के लिए तैयार।",
       starting:"ऑडियो शुरू हो रहा है…", stopped:"ऑडियो बंद हुआ", paused:"ऑडियो रुका हुआ है", none:"कोई ऑडियो नहीं चल रहा",
@@ -292,12 +304,52 @@
       || voices.find(voice => voice.lang.toLowerCase().split("-")[0] === base);
   }
   function updateVoiceDiagnostic() {
+    if (builtInAudio[code()]) {
+      document.documentElement.dataset.audioVoice = `built-in|${locale()[0]}`;
+      return;
+    }
     const voice = closestVoice();
     document.documentElement.dataset.audioVoice = voice ? `${voice.name}|${voice.lang}` : `system|${locale()[0]}`;
   }
-  function speak(text) {
+  function audioSupported() {
+    return Boolean(builtInAudio[code()] ? "Audio" in window : "speechSynthesis" in window && window.SpeechSynthesisUtterance);
+  }
+  function syncSupport() {
+    const supported = audioSupported();
+    trigger.disabled = !supported;
+    trigger.title = supported ? words().title : words().unavailable;
+    return supported;
+  }
+  function stopBuiltIn(reset = true) {
+    if (!fallbackAudio) return;
+    fallbackAudio.pause();
+    if (reset) {
+      try { fallbackAudio.currentTime = 0; } catch (error) {}
+    }
+    fallbackAudio = null;
+  }
+  function playBuiltIn(assetKey, textPack) {
+    const source = builtInAudio[code()]?.[assetKey || "generic"];
+    if (!source || !("Audio" in window)) return false;
+    if (synthesis) synthesis.cancel();
+    stopBuiltIn();
+    fallbackAudio = new Audio(source);
+    fallbackAudio.preload = "auto";
+    fallbackAudio.playbackRate = Number(speed.value);
+    fallbackAudio.onplay = () => setStatus(textPack.playing, true);
+    fallbackAudio.onended = () => { fallbackAudio = null; setStatus(textPack.finished); };
+    fallbackAudio.onerror = () => { fallbackAudio = null; setStatus(textPack.failed); };
+    setStatus(textPack.starting, true);
+    fallbackAudio.play().catch(() => {
+      fallbackAudio = null;
+      setStatus(textPack.failed);
+    });
+    return true;
+  }
+  function speak(text, assetKey) {
     const textPack = words();
     const content = cleanText(text).slice(0, 2600);
+    if (playBuiltIn(assetKey, textPack)) return;
     if (!("speechSynthesis" in window) || !window.SpeechSynthesisUtterance) {
       setStatus(textPack.unsupported);
       toast(textPack.unavailable);
@@ -308,6 +360,7 @@
       return;
     }
     const activeEngine = engine();
+    stopBuiltIn();
     activeEngine.cancel();
     utterance = new SpeechSynthesisUtterance(content);
     utterance.lang = locale()[0];
@@ -336,6 +389,19 @@
     return [...items].filter(element => element.offsetParent !== null && !element.closest(".alternatives-panel,.protein-panel"))
       .map(element => element.textContent.trim()).filter(Boolean).join(". ");
   }
+  function activeScreenKey() {
+    const view = document.querySelector(".view.active")?.id.replace(/View$/, "") || "home";
+    return words().screens[view] ? view : "business";
+  }
+  function cardAssetKey(button) {
+    const container = button.closest(".modal,.message,article");
+    if (!container) return "generic";
+    if (container.classList.contains("workout-card")) return "card-workout";
+    if (container.classList.contains("timeline-item")) return "card-meal";
+    if (container.classList.contains("protein-card")) return "card-protein";
+    if (container.classList.contains("message")) return "card-coach";
+    return "card-modal";
+  }
   function cardText(button) {
     const container = button.closest(".modal,.message,article");
     if (!container) return "";
@@ -362,9 +428,21 @@
     panel.classList.remove("open");
     trigger.setAttribute("aria-expanded", "false");
   });
-  readPage.addEventListener("click", () => speak(visibleScreenText()));
+  readPage.addEventListener("click", () => speak(visibleScreenText(), activeScreenKey()));
   pause.addEventListener("click", () => {
     const text = words();
+    if (fallbackAudio) {
+      if (fallbackAudio.paused) {
+        fallbackAudio.play();
+        pause.querySelector("small").textContent = text.pause;
+        setStatus(text.playing, true);
+      } else {
+        fallbackAudio.pause();
+        pause.querySelector("small").textContent = text.resume;
+        setStatus(text.paused);
+      }
+      return;
+    }
     const activeEngine = engine();
     if (!activeEngine?.speaking && !activeEngine?.paused) return setStatus(text.none);
     if (activeEngine.paused) {
@@ -379,41 +457,44 @@
   });
   stop.addEventListener("click", () => {
     if (synthesis) synthesis.cancel();
+    stopBuiltIn();
     pause.querySelector("small").textContent = words().pause;
     setStatus(words().stopped);
   });
-  speed.addEventListener("input", () => { speedOutput.value = `${speed.value}×`; });
+  speed.addEventListener("input", () => {
+    speedOutput.value = `${speed.value}×`;
+    if (fallbackAudio) fallbackAudio.playbackRate = Number(speed.value);
+  });
   document.addEventListener("click", event => {
     const cardButton = event.target.closest(".speak-card");
-    if (cardButton) speak(cardText(cardButton));
+    if (cardButton) speak(cardText(cardButton), cardAssetKey(cardButton));
     const nearby = event.target.closest(".speak-nearby");
-    if (nearby) speak(code() === "en" ? nearby.closest(".message")?.querySelector("p")?.textContent || "" : words().cards.coach);
+    if (nearby) speak(code() === "en" ? nearby.closest(".message")?.querySelector("p")?.textContent || "" : words().cards.coach, "card-coach");
   });
   window.addEventListener("fitsugar:language", () => {
     if (synthesis) synthesis.cancel();
+    stopBuiltIn();
     updateLocale();
     updateVoiceDiagnostic();
-    setStatus(words().languageReady);
+    setStatus(syncSupport() ? words().languageReady : words().unsupported);
   });
 
   updateLocale();
   setStatus(words().ready);
   window.FitSugarAudio = {
     speak,
-    stop: () => { if (synthesis) synthesis.cancel(); setStatus(words().stopped); },
-    readScreen: () => speak(visibleScreenText()),
+    stop: () => { if (synthesis) synthesis.cancel(); stopBuiltIn(); setStatus(words().stopped); },
+    readScreen: () => speak(visibleScreenText(), activeScreenKey()),
     toggle: togglePanel,
     get language(){ return code(); },
     get locale(){ return locale()[0]; },
     get voice(){ return closestVoice()?.name || null; },
-    get supported(){ return Boolean("speechSynthesis" in window && window.SpeechSynthesisUtterance); }
+    get supported(){ return audioSupported(); }
   };
   document.documentElement.dataset.audioReady = "true";
   if ("speechSynthesis" in window) engine().addEventListener?.("voiceschanged", updateVoiceDiagnostic);
   updateVoiceDiagnostic();
-  if (!("speechSynthesis" in window) || !window.SpeechSynthesisUtterance) {
-    trigger.disabled = true;
-    trigger.title = words().unavailable;
+  if (!syncSupport()) {
     setStatus(words().unsupported);
   }
 })();
