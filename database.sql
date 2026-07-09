@@ -1,67 +1,180 @@
--- FitSugar Pro production-oriented PostgreSQL schema (core entities)
-create extension if not exists "uuid-ossp";
-create table gyms (
-  id uuid primary key default uuid_generate_v4(),
-  name text not null, slug text unique not null, locale text default 'en-IN',
-  branding jsonb default '{}', subscription_status text default 'trial',
-  created_at timestamptz default now()
+-- Nest Cosmos Connect PostgreSQL schema draft
+
+CREATE TABLE communities (
+  id uuid PRIMARY KEY,
+  name text NOT NULL,
+  address text NOT NULL,
+  city text NOT NULL,
+  created_at timestamptz DEFAULT now()
 );
-create table users (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  role text not null check (role in ('owner','admin','trainer','member')),
-  name text not null, phone text, email text, password_hash text,
-  preferred_language text default 'en', created_at timestamptz default now()
+
+CREATE TABLE roles (
+  id serial PRIMARY KEY,
+  name text UNIQUE NOT NULL
 );
-create table member_profiles (
-  user_id uuid primary key references users(id), age int, gender text,
-  height_cm numeric, weight_kg numeric, fitness_goal text, diabetes_status text,
-  food_preference text, state_region text, workout_level text,
-  medical_notes text, trainer_id uuid references users(id), updated_at timestamptz default now()
+
+CREATE TABLE users (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  role_id int REFERENCES roles(id),
+  name text NOT NULL,
+  email text,
+  mobile text,
+  password_hash text,
+  is_active boolean DEFAULT true,
+  created_at timestamptz DEFAULT now()
 );
-create table exercises (
-  id uuid primary key default uuid_generate_v4(), name text not null,
-  muscle_group text, difficulty text, media jsonb default '{}',
-  steps jsonb default '[]', safety_notes jsonb default '[]', is_published boolean default false
+
+CREATE TABLE flats (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  block text NOT NULL,
+  floor int NOT NULL,
+  flat_no text NOT NULL,
+  owner_user_id uuid REFERENCES users(id),
+  tenant_user_id uuid REFERENCES users(id)
 );
-create table workout_plans (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  title text not null, goal text, level text, schedule jsonb not null, created_by uuid references users(id)
+
+CREATE TABLE vehicles (
+  id uuid PRIMARY KEY,
+  flat_id uuid REFERENCES flats(id),
+  type text NOT NULL,
+  registration_no text NOT NULL,
+  parking_slot text,
+  rfid_tag text
 );
-create table workout_assignments (
-  id uuid primary key default uuid_generate_v4(), member_id uuid references users(id),
-  plan_id uuid references workout_plans(id), starts_on date, status text default 'active'
+
+CREATE TABLE maintenance_bills (
+  id uuid PRIMARY KEY,
+  flat_id uuid REFERENCES flats(id),
+  bill_month date NOT NULL,
+  amount numeric(12,2) NOT NULL,
+  due_date date NOT NULL,
+  late_fee numeric(12,2) DEFAULT 0,
+  status text NOT NULL DEFAULT 'pending'
 );
-create table meal_plans (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  title text not null, goal text, region text, preference text, meals jsonb not null
+
+CREATE TABLE payments (
+  id uuid PRIMARY KEY,
+  bill_id uuid REFERENCES maintenance_bills(id),
+  amount numeric(12,2) NOT NULL,
+  method text NOT NULL,
+  gateway_ref text,
+  status text NOT NULL,
+  paid_at timestamptz,
+  receipt_url text
 );
-create table glucose_logs (
-  id uuid primary key default uuid_generate_v4(), member_id uuid references users(id),
-  value_mg_dl numeric not null, context text, measured_at timestamptz default now()
+
+CREATE TABLE complaints (
+  id uuid PRIMARY KEY,
+  flat_id uuid REFERENCES flats(id),
+  category text NOT NULL,
+  title text NOT NULL,
+  description text,
+  priority text NOT NULL,
+  status text NOT NULL,
+  assigned_to uuid REFERENCES users(id),
+  eta timestamptz,
+  rating int,
+  created_at timestamptz DEFAULT now()
 );
-create table attendance (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  member_id uuid references users(id), checked_in_at timestamptz default now()
+
+CREATE TABLE complaint_media (
+  id uuid PRIMARY KEY,
+  complaint_id uuid REFERENCES complaints(id),
+  media_type text NOT NULL,
+  url text NOT NULL
 );
-create table memberships (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  member_id uuid references users(id), plan_name text, starts_on date, ends_on date,
-  amount_paise int, status text default 'active'
+
+CREATE TABLE visitors (
+  id uuid PRIMARY KEY,
+  flat_id uuid REFERENCES flats(id),
+  name text NOT NULL,
+  mobile text,
+  visitor_type text NOT NULL,
+  vehicle_no text,
+  status text NOT NULL,
+  entry_time timestamptz,
+  exit_time timestamptz,
+  photo_url text
 );
-create table payments (
-  id uuid primary key default uuid_generate_v4(), membership_id uuid references memberships(id),
-  provider text, provider_payment_id text unique, amount_paise int not null,
-  status text not null, paid_at timestamptz, created_at timestamptz default now()
+
+CREATE TABLE facilities (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  name text NOT NULL,
+  requires_approval boolean DEFAULT true,
+  fee numeric(12,2) DEFAULT 0
 );
-create table leads (
-  id uuid primary key default uuid_generate_v4(), gym_id uuid references gyms(id),
-  name text not null, phone text, source text, stage text default 'new',
-  trial_at timestamptz, created_at timestamptz default now()
+
+CREATE TABLE facility_bookings (
+  id uuid PRIMARY KEY,
+  facility_id uuid REFERENCES facilities(id),
+  flat_id uuid REFERENCES flats(id),
+  starts_at timestamptz NOT NULL,
+  ends_at timestamptz NOT NULL,
+  status text NOT NULL
 );
-create table notifications (
-  id uuid primary key default uuid_generate_v4(), user_id uuid references users(id),
-  channel text, kind text, payload jsonb, scheduled_for timestamptz, sent_at timestamptz
+
+CREATE TABLE notices (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  title text NOT NULL,
+  body text NOT NULL,
+  severity text NOT NULL DEFAULT 'info',
+  published_by uuid REFERENCES users(id),
+  created_at timestamptz DEFAULT now()
 );
-create index on users(gym_id, role);
-create index on attendance(gym_id, checked_in_at);
-create index on memberships(gym_id, status, ends_on);
+
+CREATE TABLE documents (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  title text NOT NULL,
+  category text NOT NULL,
+  url text NOT NULL,
+  visibility text NOT NULL DEFAULT 'residents'
+);
+
+CREATE TABLE polls (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  question text NOT NULL,
+  closes_at timestamptz,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE poll_votes (
+  poll_id uuid REFERENCES polls(id),
+  user_id uuid REFERENCES users(id),
+  option_text text NOT NULL,
+  PRIMARY KEY (poll_id,user_id)
+);
+
+CREATE TABLE staff_tasks (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  assigned_to uuid REFERENCES users(id),
+  title text NOT NULL,
+  status text NOT NULL,
+  due_at timestamptz
+);
+
+CREATE TABLE expenses (
+  id uuid PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  category text NOT NULL,
+  amount numeric(12,2) NOT NULL,
+  expense_date date NOT NULL,
+  vendor text,
+  attachment_url text
+);
+
+CREATE TABLE audit_logs (
+  id bigserial PRIMARY KEY,
+  community_id uuid REFERENCES communities(id),
+  actor_id uuid REFERENCES users(id),
+  action text NOT NULL,
+  entity text NOT NULL,
+  entity_id text,
+  created_at timestamptz DEFAULT now()
+);
