@@ -3,155 +3,369 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Nest Cosmos Connect is a complete apartment management platform for residents, association teams, security, staff and finance operations." />
-  <meta name="theme-color" content="#0f5fb8" />
+  <meta name="description" content="FitSugar Pro — culturally aware fitness and gym management for India." />
+  <meta name="theme-color" content="#20231f" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Nest Cosmos" />
-  <title>Nest Cosmos Connect</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FitSugar Pro" />
+  <title>FitSugar Pro — Fitness that fits real life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="audio.css?v=22" />
+  <link rel="stylesheet" href="install.css?v=22" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#overview" data-view="overview" aria-label="Nest Cosmos Connect home">
-        <span class="brand-mark">NC</span>
-        <span><b>Nest Cosmos</b><small>Connect</small></span>
+      <a class="brand" href="#" data-view="home" aria-label="FitSugar Pro home">
+        <span class="brand-mark">FS</span>
+        <span><b>FitSugar</b><small>PRO</small></span>
       </a>
-      <nav class="main-nav" aria-label="Primary navigation">
-        <p>Operations</p>
-        <button class="nav-item active" data-view="overview"><span>01</span>Overview</button>
-        <button class="nav-item" data-view="resident"><span>02</span>Resident Hub</button>
-        <button class="nav-item" data-view="payments"><span>03</span>Payments</button>
-        <button class="nav-item" data-view="complaints"><span>04</span>Complaints</button>
-        <button class="nav-item" data-view="visitors"><span>05</span>Visitors</button>
-        <button class="nav-item" data-view="facilities"><span>06</span>Facilities</button>
-        <button class="nav-item" data-view="community"><span>07</span>Community</button>
-        <p>Administration</p>
-        <button class="nav-item" data-view="staff"><span>08</span>Staff</button>
-        <button class="nav-item" data-view="finance"><span>09</span>Finance</button>
-        <button class="nav-item" data-view="reports"><span>10</span>Reports</button>
-        <button class="nav-item" data-view="settings"><span>11</span>Setup</button>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <p class="nav-label">MY FITNESS</p>
+        <button class="nav-item active" data-view="home"><span>⌂</span>Home</button>
+        <button class="nav-item" data-view="workouts"><span>◫</span>Workouts</button>
+        <button class="nav-item" data-view="nutrition"><span>◉</span>Nutrition</button>
+        <button class="nav-item" data-view="progress"><span>↗</span>Progress</button>
+        <button class="nav-item" data-view="health"><span>♡</span>Health Hub</button>
+        <button class="nav-item" data-view="coach"><span>✦</span>FitSugar Coach</button>
+        <button class="nav-item" data-view="restart"><span>↻</span>Restart Plan</button>
+        <p class="nav-label">MY GYM</p>
+        <button class="nav-item" data-view="membership"><span>▣</span>Membership</button>
+        <button class="nav-item" data-view="members"><span>♙</span>Members</button>
+        <button class="nav-item" data-view="exports"><span>₹</span>Export &amp; Sales</button>
+        <button class="nav-item" data-view="owner"><span>⌘</span>Owner Console</button>
       </nav>
-      <div class="side-card">
-        <b>Emergency Mode</b>
-        <span>Push, SMS and email alert workflow</span>
-        <button class="light-btn" id="emergencyBtn">Send drill alert</button>
+
+      <div class="upgrade-card">
+        <span class="spark">✦</span>
+        <b>Unlock your best</b>
+        <p>Custom plans, deeper insights, zero limits.</p>
+        <button class="btn btn-light btn-small" data-modal="upgrade">Explore Pro</button>
+      </div>
+
+      <div class="profile-mini">
+        <div class="avatar" id="profileAvatar">FS</div>
+        <div><b id="profileName">FitSugar Member</b><small id="profileMeta">Member · Your city</small></div>
+        <button id="profileEditBtn" data-modal="profile" aria-label="Edit your profile">•••</button>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
-        <div class="search-box"><span>Search</span><input id="globalSearch" placeholder="Flat, resident, payment, visitor, document..." /></div>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="globalSearch" placeholder="Search workouts, food, plans..." aria-label="Search" />
+          <kbd>⌘ K</kbd>
+        </div>
         <div class="top-actions">
-          <select id="roleSelect" aria-label="Switch role"></select>
-          <button class="icon-btn" id="languageToggle" aria-label="Toggle language">TA</button>
-          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">Dark</button>
-          <button class="install-btn" id="installBtn">Install PWA</button>
+          <button class="install-app-btn" id="installAppBtn" aria-label="Install FitSugar Pro"><span>↓</span><span>Install app</span></button>
+          <button class="icon-btn audio-trigger" id="audioBtn" aria-label="Open Voice Guide" aria-expanded="false">🔊</button>
+          <button class="language-btn" id="languageBtn"><span>अ</span><b id="languageLabel">English</b><small>⌄</small></button>
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">♢<i></i></button>
         </div>
       </header>
 
-      <section class="role-banner" id="roleBanner"></section>
-
-      <section class="view active" id="overviewView">
-        <div class="hero">
-          <div class="hero-copy">
-            <span class="eyebrow">Pondicherry Pattai Salai, Sholinganallur, Chennai</span>
-            <h1>Nest Cosmos Connect</h1>
-            <p>One platform for maintenance collections, complaints, visitors, security, facilities, staff, accounts, notices, documents, polls and emergency communication.</p>
-            <div class="hero-actions">
-              <button class="btn primary" data-view="resident">Open resident app</button>
-              <button class="btn ghost" data-view="reports">View admin portal</button>
-            </div>
+      <div class="view active" id="homeView">
+        <section class="welcome-row">
+          <div>
+            <span class="eyebrow">FRIDAY, 3 JULY</span>
+            <h1 id="personalGreeting">Good morning <span>👋</span></h1>
+            <p>Small steps, strong habits. Let’s make today count.</p>
           </div>
-          <img src="assets/nest-cosmos-hero.png" alt="Modern apartment community operations dashboard" />
-        </div>
-        <div class="kpi-grid" id="overviewKpis"></div>
-        <section class="split-grid">
-          <article class="panel stack-panel">
-            <div class="panel-head"><div><span class="eyebrow">Live Operations</span><h2>Today at Nest Cosmos</h2></div><button class="text-btn" data-view="reports">Export</button></div>
-            <div class="timeline" id="activityFeed"></div>
+          <div class="streak-pill"><span>🔥</span><div><b>12 day streak</b><small>Your best: 18 days</small></div></div>
+        </section>
+        <section class="restart-home-banner" id="restartHomeBanner" hidden></section>
+
+        <section class="hero-grid">
+          <article class="workout-hero">
+            <img src="assets/workouts/dumbbell-chest-press.png" alt="Beginner performing a dumbbell chest press with controlled form" />
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <span class="tag coral">TODAY'S WORKOUT</span>
+              <h2>Upper Body<br>Strength</h2>
+              <div class="hero-meta"><span>◷ 42 min</span><span>● Intermediate</span><span>⚡ 320 kcal</span></div>
+              <button class="btn btn-primary" data-action="start-workout"><span>▶</span> Start workout</button>
+            </div>
+            <div class="progress-dial"><b>3<small>/ 8</small></b><span>sessions</span></div>
           </article>
-          <article class="panel command-panel">
-            <div class="panel-head"><div><span class="eyebrow">Role Based Access</span><h2>Workspace permissions</h2></div></div>
-            <div class="role-grid" id="roleCards"></div>
+
+          <article class="glucose-card">
+            <div class="card-head"><div><span class="eyebrow">GLUCOSE CHECK-IN</span><h3>You're in range</h3></div><span class="status-dot">● Stable</span></div>
+            <div class="glucose-reading"><b id="homeGlucoseValue">112</b><span>mg/dL<small id="homeGlucoseContext">Before breakfast</small></span></div>
+            <div class="range-track"><i style="left:42%"></i></div>
+            <div class="range-labels"><span>70</span><span>Target range</span><span>180</span></div>
+            <button class="text-btn" data-view="health">+ Log new reading</button>
+            <div class="tip"><span>✦</span><p><b>Coach tip</b>Your numbers look good. Today’s strength session is a great match.</p></div>
           </article>
         </section>
-      </section>
 
-      <section class="view" id="residentView">
-        <div class="page-head"><div><span class="eyebrow">Resident / Owner / Tenant</span><h1>Resident Hub</h1><p>Payments, complaints, visitors, family, vehicles, documents and admin chat from one mobile-friendly home.</p></div><button class="btn primary" data-modal="profile">Update profile</button></div>
-        <div class="resident-layout">
-          <article class="panel dues-card"><span class="eyebrow">Current Due</span><h2>Rs. 4,250</h2><p>July maintenance due on 15 July 2026. Late fee Rs. 250 after due date.</p><div class="pay-methods"><button data-pay="UPI">UPI</button><button data-pay="Card">Card</button><button data-pay="Net Banking">Net Banking</button></div></article>
-          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Family & Assets</span><h2>Flat B-704</h2></div></div><div class="chip-list"><span>Owner: Arjun Mehta</span><span>4 family members</span><span>2 vehicles</span><span>2 emergency contacts</span></div></article>
-          <article class="panel chat-card"><div class="panel-head"><div><span class="eyebrow">Admin Chat</span><h2>Quick help</h2></div></div><div class="messages" id="chatMessages"></div><form id="chatForm" class="inline-form"><input placeholder="Ask admin..." required /><button>Send</button></form></article>
+        <section class="quick-stats">
+          <article><span class="stat-icon coral-bg">♟</span><div><small>ACTIVE MINUTES</small><b>38 <em>/ 45 min</em></b></div><i><u style="width:84%"></u></i></article>
+          <article id="homeStepsCard"><span class="stat-icon green-bg">⌁</span><div><small>STEPS</small><b><span id="homeStepsValue">6,842</span> <em>/ 8,000</em></b></div><i><u id="homeStepsBar" style="width:72%"></u></i></article>
+          <article id="homeWaterCard"><span class="stat-icon violet-bg">◒</span><div><small>WATER</small><b><span id="homeWaterValue">1.6</span> <em>/ 2.5 L</em></b></div><i><u id="homeWaterBar" style="width:64%"></u></i></article>
+          <article><span class="stat-icon amber-bg">ϟ</span><div><small>CALORIES</small><b>486 <em>kcal burned</em></b></div><i><u style="width:58%"></u></i></article>
+        </section>
+
+        <section class="section-block">
+          <div class="section-title"><div><span class="eyebrow">MADE FOR YOUR GOAL</span><h2>Your weekly plan</h2></div><button class="text-btn" data-view="workouts">View full plan →</button></div>
+          <div class="week-row" id="weekRow">
+            <button class="day done"><small>MON</small><b>29</b><span>✓</span></button>
+            <button class="day done"><small>TUE</small><b>30</b><span>✓</span></button>
+            <button class="day"><small>WED</small><b>1</b><span>◒</span></button>
+            <button class="day"><small>THU</small><b>2</b><span>—</span></button>
+            <button class="day active"><small>FRI</small><b>3</b><span>●</span></button>
+            <button class="day"><small>SAT</small><b>4</b><span>⌁</span></button>
+            <button class="day rest"><small>SUN</small><b>5</b><span>Rest</span></button>
+          </div>
+        </section>
+
+        <section class="two-col">
+          <div class="section-block meal-block">
+            <div class="section-title"><div><span class="eyebrow">FUEL YOUR DAY</span><h2>Up next</h2></div><button class="text-btn" data-view="nutrition">Full meal plan →</button></div>
+            <article class="meal-card">
+              <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=85" alt="Healthy Indian meal with lentils" />
+              <div class="meal-content"><span class="tag green">LUNCH · 1:00 PM</span><h3>Millet rice, dal & vegetable poriyal</h3><p>Balanced South Indian plate, rich in fibre and steady energy.</p><div><b>480 <small>kcal</small></b><span>P 24g</span><span>C 62g</span><span>F 14g</span></div></div>
+              <button class="round-btn" data-modal="meal">→</button>
+            </article>
+          </div>
+          <div class="section-block coach-teaser">
+            <div class="coach-orb">✦</div>
+            <span class="eyebrow">FITSUGAR COACH</span>
+            <h2>Anything on your mind?</h2>
+            <p>Ask about form, food, glucose, or make a plan that works around your day.</p>
+            <div class="prompt-chips"><button>What should I eat before training?</button><button>Make today’s workout easier</button></div>
+            <button class="btn btn-dark" data-view="coach">Ask Coach <span>→</span></button>
+          </div>
+        </section>
+
+        <div class="medical-note"><span>♡</span><p><b>Your safety matters.</b> If you have diabetes, heart or blood pressure concerns, are pregnant, or recovering from injury, consult a qualified doctor before changing your workout or diet.</p></div>
+      </div>
+
+      <div class="view" id="workoutsView">
+        <section class="page-heading"><div><span class="eyebrow">MOVE WITH CONFIDENCE</span><h1>Workout library</h1><p>Trainer-built sessions with clear form cues and safety notes.</p></div><div class="workout-controls"><label class="age-control"><small id="ageGroupLabel">AGE GROUP</small><select id="ageGroupSelect" aria-label="Select age group"><option value="teen">13–17 years</option><option value="adult" selected>18–39 years</option><option value="midlife">40–59 years</option><option value="senior">60+ years</option></select></label><button class="btn btn-primary" data-view="health">+ Build a plan</button></div></section>
+        <section class="age-plan" id="agePlan" aria-live="polite"></section>
+        <section class="active-restart-strip" id="activeRestartStrip" hidden aria-live="polite"></section>
+        <div class="filter-row" id="workoutFilters">
+          <button class="active" data-filter="all">All</button><button data-filter="chest">Chest</button><button data-filter="back">Back</button><button data-filter="legs">Legs</button><button data-filter="arms">Arms</button><button data-filter="shoulders">Shoulders</button><button data-filter="full">Full body</button>
         </div>
-        <div class="module-grid" id="residentModules"></div>
-      </section>
+        <div class="workout-grid" id="workoutGrid"></div>
+      </div>
 
-      <section class="view" id="paymentsView">
-        <div class="page-head"><div><span class="eyebrow">Maintenance Payments</span><h1>Billing and Collections</h1><p>Monthly bill generation, online payments, cash recording, receipts, defaulters and flat-wise statements.</p></div><button class="btn primary" id="generateBillsBtn">Generate July bills</button></div>
-        <div class="kpi-grid" id="paymentKpis"></div>
-        <section class="panel"><div class="panel-head"><div><span class="eyebrow">Flat-wise Ledger</span><h2>Maintenance status</h2></div><button class="text-btn" data-export="payments">CSV export</button></div><div class="table-wrap"><table><thead><tr><th>Flat</th><th>Resident</th><th>Amount</th><th>Status</th><th>Method</th><th>Receipt</th></tr></thead><tbody id="paymentRows"></tbody></table></div></section>
-      </section>
+      <div class="view" id="nutritionView">
+        <section class="page-heading"><div><span class="eyebrow">ROOTED IN YOUR REGION</span><h1>Food that feels like home</h1><p>Practical nutrition for your goals, preferences, and glucose profile.</p></div><label class="region-control"><small>YOUR STATE / UT</small><select id="regionSelect" aria-label="Select Indian state or union territory"></select></label></section>
+        <section class="nutrition-hero">
+          <div><span class="tag green">TODAY · DIABETES-FRIENDLY</span><h2>Your plate, intelligently balanced.</h2><p>Higher fibre, 82g protein, familiar ingredients—and no joyless “diet food”.</p><div><button class="btn btn-primary" data-modal="mealplan">View today's plan</button><button class="btn btn-ghost" id="swapMealBtn">Swap a meal</button></div></div>
+          <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85" alt="Colourful balanced healthy meal" />
+        </section>
+        <div class="section-title"><div><span class="eyebrow">TODAY'S MENU</span><h2>Five steady-energy meals</h2></div></div>
+        <div class="meal-timeline" id="mealTimeline"></div>
+        <div class="section-title top-gap"><div><span class="eyebrow">SMART SIPS</span><h2>Protein without the sugar rush</h2></div></div>
+        <div class="protein-grid" id="proteinGrid"></div>
+      </div>
 
-      <section class="view" id="complaintsView">
-        <div class="page-head"><div><span class="eyebrow">Complaint Management</span><h1>Ticket Flow</h1><p>Resident to admin to staff assignment, ETA tracking, photos/videos and resident rating.</p></div><button class="btn primary" data-modal="complaint">Raise complaint</button></div>
-        <div class="workflow"><span>Resident</span><i></i><span>Admin</span><i></i><span>Assign Staff</span><i></i><span>In Progress</span><i></i><span>Completed</span><i></i><span>Rating</span></div>
-        <div class="complaint-board" id="complaintBoard"></div>
-      </section>
-
-      <section class="view" id="visitorsView">
-        <div class="page-head"><div><span class="eyebrow">Security App</span><h1>Visitor and Vehicle Gate</h1><p>Entry, photo, vehicle number, flat approval, delivery, maid, driver and exit logs.</p></div><button class="btn primary" data-modal="visitor">Add expected visitor</button></div>
-        <div class="security-console">
-          <article class="panel scan-panel"><span class="eyebrow">Gate Search</span><h2>Find visitor, vehicle or flat</h2><form id="gateSearchForm" class="inline-form"><input placeholder="TN 07, B-704, mobile..." required /><button>Search</button></form><div id="gateResult" class="search-result">Security can search vehicles and visitor approvals instantly.</div></article>
-          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Pending Approvals</span><h2>Resident decisions</h2></div></div><div id="visitorList" class="visitor-list"></div></article>
+      <div class="view" id="progressView">
+        <section class="page-heading"><div><span class="eyebrow">CONSISTENCY, VISUALISED</span><h1>Your progress</h1><p>The numbers that matter—without letting them run the show.</p></div><button class="btn btn-primary" data-view="health">+ Weekly check-in</button></section>
+        <div class="progress-cards">
+          <article><small>WEIGHT</small><b><span id="progressWeightValue">74.2</span> <em>kg</em></b><span class="positive" id="progressWeightNote">Track your current weight</span></article>
+          <article><small>AVG. GLUCOSE</small><b><span id="progressGlucoseValue">118</span> <em>mg/dL</em></b><span class="positive" id="progressGlucoseNote">Recent average</span></article>
+          <article><small>WORKOUTS</small><b>21 <em>sessions</em></b><span>84% completion</span></article>
+          <article><small>BMI</small><b id="progressBmiValue">24.8</b><span class="positive" id="progressBmiNote">Healthy range</span></article>
         </div>
-      </section>
+        <article class="chart-card">
+          <div class="card-head"><div><span class="eyebrow">8-WEEK TREND</span><h2>Weight is moving steadily</h2></div><span class="tag green">−3.6%</span></div>
+          <div class="chart-area"><div class="chart-grid"></div><svg viewBox="0 0 900 250" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff654d" stop-opacity=".28"/><stop offset="1" stop-color="#ff654d" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182 L900 250 L0 250Z"/><path class="line" d="M0 55 C100 52 110 75 220 72 S340 108 450 104 S560 142 670 135 S780 190 900 182"/></svg><div class="chart-labels"><span>May 15</span><span>May 29</span><span>Jun 12</span><span>Jun 26</span><span>Today</span></div></div>
+        </article>
+        <section class="workout-history-card"><div class="section-title"><div><span class="eyebrow">WORKOUT HISTORY</span><h2>Recent guided sessions</h2></div></div><div id="workoutHistoryList"></div></section>
+      </div>
 
-      <section class="view" id="facilitiesView">
-        <div class="page-head"><div><span class="eyebrow">Facility Booking</span><h1>Calendar and Approvals</h1><p>Community hall, terrace, club house, gym, play area, party hall and guest parking bookings.</p></div><button class="btn primary" data-modal="booking">Book facility</button></div>
-        <div class="facility-grid" id="facilityGrid"></div>
-      </section>
-
-      <section class="view" id="communityView">
-        <div class="page-head"><div><span class="eyebrow">Notices, Polls, Documents</span><h1>Community Desk</h1><p>Moderated announcements, buy/sell, lost and found, events, searchable documents and polls.</p></div><button class="btn primary" data-modal="notice">Publish notice</button></div>
-        <div class="community-grid">
-          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Notice Board</span><h2>Published alerts</h2></div></div><div id="noticeList"></div></article>
-          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Poll</span><h2>Festival budget approval</h2></div></div><div class="poll"><button data-vote="yes">Approve</button><button data-vote="no">Reject</button><div class="poll-bar"><i id="pollFill"></i></div><small id="pollText"></small></div></article>
-          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Documents</span><h2>Association library</h2></div><button class="text-btn" data-export="documents">Index</button></div><div id="documentList"></div></article>
+      <div class="view" id="healthView">
+        <section class="page-heading"><div><span class="eyebrow">YOUR HEALTH TOOLKIT</span><h1 id="healthHubTitle">Health Hub</h1><p>Registration, body metrics, diabetes, activity, reminders, photos, and personalised plans in one place.</p></div><span class="device-private">🔒 Saved on this device</span></section>
+        <div class="core-feature-grid">
+          <section class="core-card account-card" id="accountCard"></section>
+          <section class="core-card metrics-card">
+            <div class="core-card-head"><span>◎</span><div><b>Body profile & BMI</b><small>Height, weight, age and goal</small></div></div>
+            <form class="core-form body-profile-form" id="bodyProfileForm">
+              <label>Height (cm)<input type="number" name="height" min="100" max="250" required></label>
+              <label>Weight (kg)<input type="number" name="weight" min="25" max="300" step="0.1" required></label>
+              <label>Age<input type="number" name="age" min="13" max="100" required></label>
+              <label>Goal<select name="goal"><option value="loss">Weight loss</option><option value="gain">Weight gain</option><option value="maintain">Maintain weight</option><option value="glucose">Improve glucose control</option></select></label>
+              <button class="btn btn-primary" type="submit">Calculate & save</button>
+            </form>
+            <div class="bmi-result" id="bmiResult"></div>
+          </section>
+          <section class="core-card diabetes-card">
+            <div class="core-card-head"><span>◇</span><div><b>Diabetes tracking</b><small>Record and review glucose readings</small></div></div>
+            <form class="core-form glucose-log-form" id="glucoseLogForm">
+              <label>Reading (mg/dL)<input type="number" name="reading" min="30" max="600" required></label>
+              <label>Timing<select name="context"><option>Fasting</option><option>Before meal</option><option>2 hours after meal</option><option>Bedtime</option></select></label>
+              <button class="btn btn-primary" type="submit">Save reading</button>
+            </form>
+            <div class="glucose-summary" id="glucoseSummary"></div>
+            <div class="mini-log" id="glucoseHistory"></div>
+          </section>
+          <section class="core-card smart-plan-card">
+            <div class="core-card-head"><span>✦</span><div><b>Smart recommendations</b><small>Goal, BMI, age, glucose and restart-aware</small></div></div>
+            <div id="smartRecommendation"></div>
+          </section>
+          <section class="core-card activity-card-core">
+            <div class="core-card-head"><span>⌁</span><div><b>Daily activity</b><small>Water reminder and step counter</small></div></div>
+            <div class="daily-trackers">
+              <div class="tracker-block"><div><b>Water</b><strong id="waterTrackerValue">0 / 2500 ml</strong></div><div class="tracker-actions"><button type="button" data-water="-250">−</button><button type="button" data-water="250">+ 250 ml</button></div><label>Reminder<select id="waterReminderInterval"><option value="0">Off</option><option value="30">Every 30 min</option><option value="60">Every 60 min</option><option value="90">Every 90 min</option></select></label></div>
+              <div class="tracker-block"><div><b>Steps</b><strong id="stepTrackerValue">0 / 8000</strong></div><form id="manualStepsForm"><input type="number" name="steps" min="1" max="100000" placeholder="Add steps" required><button type="submit">Add</button></form><button class="motion-btn" id="connectMotionBtn" type="button">Connect phone motion</button><small id="motionStatus">Manual tracking ready</small></div>
+            </div>
+          </section>
+          <section class="core-card photos-card">
+            <div class="core-card-head"><span>▧</span><div><b>Progress photos</b><small>Private, device-only photo timeline</small></div></div>
+            <label class="photo-upload">+ Add progress photo<input id="progressPhotoInput" type="file" accept="image/*" capture="environment"></label>
+            <div class="progress-photo-grid" id="progressPhotoGrid"></div>
+          </section>
+          <section class="core-card video-card-core">
+            <div class="core-card-head"><span>▶</span><div><b>Workout video library</b><small>Open exercise demonstrations</small></div></div>
+            <div class="core-video-grid" id="coreVideoGrid"></div>
+          </section>
         </div>
-      </section>
+      </div>
 
-      <section class="view" id="staffView">
-        <div class="page-head"><div><span class="eyebrow">Staff Management</span><h1>Attendance and Work Orders</h1><p>Security, housekeeping, electrician, plumber, lift technician and garden staff operations.</p></div><button class="btn primary" data-modal="staff">Assign task</button></div>
-        <div class="staff-grid" id="staffGrid"></div>
-      </section>
+      <div class="view" id="coachView">
+        <section class="coach-page">
+          <div class="coach-intro"><div class="coach-orb large">✦</div><span class="eyebrow">YOUR ALWAYS-ON FITNESS PARTNER</span><h1>FitSugar Coach</h1><p>Practical answers tuned to your goals, food, region, and health profile.</p></div>
+          <div class="chat-card">
+            <div class="chat-head"><div class="coach-orb small">✦</div><div><b>FitSugar Coach</b><small><i></i> Online · Knows your plan</small></div><button>•••</button></div>
+            <div class="messages" id="messages">
+              <div class="message coach"><span>✦</span><p id="coachWelcome">Good morning! Your glucose is steady and upper-body strength is queued. How can I help you today?</p><button class="speak-nearby" aria-label="Listen to Coach reply">🔊</button></div>
+            </div>
+            <div class="suggestions"><button>Pre-workout snack?</button><button>Explain today's workout</button><button>Plan my week</button></div>
+            <form class="chat-input" id="chatForm"><input id="chatInput" placeholder="Ask about workouts, food, or health..." autocomplete="off"><button aria-label="Send">↑</button></form>
+            <small class="ai-note">AI guidance is educational and does not replace medical advice.</small>
+          </div>
+        </section>
+        <section class="beginner-guide">
+          <div class="section-title"><div><span class="eyebrow" id="beginnerEyebrow">NEW TO THE GYM</span><h2 id="beginnerTitle">Your beginner exercise guide</h2><p id="beginnerIntro">Start light, learn the movement, and ask a trainer to check your form.</p></div></div>
+          <div class="beginner-guide-grid" id="beginnerGuideGrid"></div>
+        </section>
+      </div>
 
-      <section class="view" id="financeView">
-        <div class="page-head"><div><span class="eyebrow">Expense and Accounts</span><h1>Finance Control</h1><p>EB bill, water tanker, generator diesel, lift maintenance, salary, repairs and cash flow.</p></div><button class="btn primary" data-modal="expense">Record expense</button></div>
-        <div class="finance-layout"><article class="panel"><div class="panel-head"><div><span class="eyebrow">Expense Split</span><h2>July 2026</h2></div></div><div class="bar-list" id="expenseBars"></div></article><article class="panel"><div class="panel-head"><div><span class="eyebrow">P&L Snapshot</span><h2>Association accounts</h2></div></div><div class="statement" id="statement"></div></article></div>
-      </section>
+      <div class="view" id="restartView">
+        <section class="page-heading"><div><span class="eyebrow">SAFE RETURN TO FITNESS</span><h1>Restart Fitness Plan</h1><p>FitSugar checks your break and rebuilds your plan at a safer starting level.</p></div></section>
+        <section class="restart-layout">
+          <form class="restart-form-card" id="restartForm">
+            <span class="eyebrow">WELCOME BACK CHECK-IN</span><h2>Tell us what changed</h2>
+            <div class="restart-form-grid">
+              <label>Last workout date<input type="date" id="lastWorkoutDate" name="lastWorkoutDate" required></label>
+              <label>Current weight (kg)<input type="number" id="restartWeight" name="weight" min="25" max="300" step="0.1" required></label>
+              <label class="wide">Current goal<select id="restartGoal" name="goal"><option>Build strength</option><option>Weight loss</option><option>Improve glucose control</option><option>General fitness</option><option>Mobility and balance</option></select></label>
+              <label class="wide">Health changes<textarea id="healthChanges" name="healthChanges" rows="3" placeholder="New medicines, surgery, pregnancy, pain, or other changes"></textarea></label>
+              <label>Injury update<select id="injuryStatus" name="injuryStatus"><option value="none">No current injury</option><option value="recovering">Recovering from injury</option><option value="current">Current pain or injury</option></select></label>
+              <label>Diabetes / BP status<select id="medicalStatus" name="medicalStatus"><option value="none">None reported</option><option value="diabetes">Diabetes</option><option value="bp">Blood pressure</option><option value="heart">Heart condition</option><option value="multiple">More than one condition</option></select></label>
+            </div>
+            <label class="restart-check"><input type="checkbox" id="trainerAlertConsent" checked> Create an in-app trainer alert after a long break</label>
+            <button class="btn btn-primary" type="submit">Create my safe restart plan</button>
+          </form>
+          <article class="restart-result-card" id="restartPlanOutput" aria-live="polite"></article>
+        </section>
+      </div>
 
-      <section class="view" id="reportsView">
-        <div class="page-head"><div><span class="eyebrow">Reports and PDF Generator</span><h1>Admin Reports</h1><p>Maintenance, pending dues, complaint analytics, visitors, expenses, audit, monthly and yearly reports.</p></div><button class="btn primary" id="downloadReportBtn">Download summary</button></div>
-        <div class="report-grid" id="reportGrid"></div>
-        <section class="panel architecture"><div class="panel-head"><div><span class="eyebrow">Production Architecture</span><h2>Scalable implementation blueprint</h2></div></div><div id="architectureList"></div></section>
-      </section>
+      <div class="view" id="membershipView">
+        <section class="page-heading"><div><span class="eyebrow">MY GYM</span><h1>Membership</h1><p>Your plan, visits, payments, and trainer in one place.</p></div></section>
+        <section class="membership-layout">
+          <article class="member-pass"><span>FITSUGAR PRO · MEMBER</span><div><h2 id="membershipName">FitSugar Member</h2><p id="membershipGym">Your gym</p></div><div class="pass-bottom"><b>PRO ANNUAL</b><span>Valid until 28 Feb 2027</span></div><i>FS</i></article>
+          <article class="membership-info"><span class="eyebrow">CURRENT PLAN</span><h2>Pro Annual Membership</h2><div class="info-row"><span>Next payment</span><b>₹12,999 · 28 Feb 2027</b></div><div class="info-row"><span>Trainer</span><b>Priya Raman</b></div><div class="info-row"><span>Visits this month</span><b>14 of 20 goal</b></div><button class="btn btn-dark" id="membershipInvoiceBtn">Download invoice</button></article>
+        </section>
+      </div>
 
-      <section class="view" id="settingsView">
-        <div class="page-head"><div><span class="eyebrow">Apartment Setup</span><h1>Configuration</h1><p>Apartment, blocks, floors, flat numbering, dues, bank, UPI, GST and notification channels.</p></div><button class="btn primary" id="saveSettingsBtn">Save setup</button></div>
-        <form class="settings-grid" id="settingsForm"></form>
-      </section>
+      <div class="view" id="membersView">
+        <section class="page-heading"><div><span class="eyebrow">MEMBER CRM</span><h1>Members</h1><p>Add members, track inactivity, create restart plans, and issue invoices.</p></div><button class="btn btn-primary" data-business-action="add-member">+ Add member</button></section>
+        <div class="business-kpis" id="memberKpis"></div>
+        <section class="member-table-card">
+          <div class="section-title"><div><span class="eyebrow">MEMBER DIRECTORY</span><h2>Manage members</h2></div><input class="table-search" id="memberSearch" placeholder="Search members..." aria-label="Search members"></div>
+          <div class="table-wrap"><table><thead><tr><th>Member</th><th>Plan</th><th>Trainer</th><th>Last workout</th><th>Status</th><th>Actions</th></tr></thead><tbody id="manageMemberRows"></tbody></table></div>
+        </section>
+      </div>
+
+      <div class="view" id="exportsView">
+        <section class="page-heading"><div><span class="eyebrow">REVENUE CONTROL</span><h1>Export &amp; Sales</h1><p>Record payments, manage sales reports, export CSV files, and download invoices.</p></div><div><button class="btn btn-ghost" data-export="members">Export members</button><button class="btn btn-primary" data-export="sales">Export sales CSV</button></div></section>
+        <div class="business-kpis" id="salesKpis"></div>
+        <section class="sales-layout">
+          <form class="sales-entry-card" id="salesEntryForm">
+            <span class="eyebrow">RECORD A PAYMENT</span><h2>Add sale</h2>
+            <label>Member<select id="saleMember" name="memberId" required></select></label>
+            <label>Payment date<input type="date" id="saleDate" name="date" required></label>
+            <label>Amount (₹)<input type="number" name="amount" min="1" step="1" required placeholder="12999"></label>
+            <label>Payment method<select name="method"><option>UPI</option><option>Card</option><option>Cash</option><option>Bank transfer</option></select></label>
+            <label>Status<select name="status"><option>Paid</option><option>Pending</option><option>Refunded</option></select></label>
+            <button class="btn btn-primary" type="submit">Save payment</button>
+          </form>
+          <article class="member-table-card sales-report-card">
+            <div class="section-title"><div><span class="eyebrow">SALES REPORT</span><h2>Payment activity</h2></div><select id="salesMonthFilter" aria-label="Filter sales month"></select></div>
+            <div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>Member</th><th>Method</th><th>Status</th><th>Amount</th><th></th></tr></thead><tbody id="salesRows"></tbody></table></div>
+          </article>
+        </section>
+      </div>
+
+      <div class="view" id="ownerView">
+        <section class="page-heading owner-heading"><div><span class="eyebrow">PULSE FITNESS · ADYAR</span><h1>Business overview</h1><p>Friday, 3 July · Here’s how your gym is moving.</p></div><div><button class="btn btn-ghost" data-export="sales">Export report</button><button class="btn btn-primary" data-view="members">+ Add member</button></div></section>
+        <div class="owner-stats">
+          <article><span>ACTIVE MEMBERS</span><b>428</b><small class="positive">↑ 12 this month</small></article>
+          <article><span>TODAY'S ATTENDANCE</span><b>96</b><small>22% of members</small></article>
+          <article><span>MONTHLY REVENUE</span><b>₹4.82L</b><small class="positive">↑ 8.4% vs Jun</small></article>
+          <article><span>PENDING PAYMENTS</span><b>₹38,400</b><small class="warning">26 members</small></article>
+        </div>
+        <section class="owner-grid">
+          <article class="chart-card revenue-card"><div class="card-head"><div><span class="eyebrow">REVENUE</span><h2>₹4,82,600 this month</h2></div><select><option>Last 6 months</option></select></div><div class="bar-chart"><i style="height:44%"><span>FEB</span></i><i style="height:58%"><span>MAR</span></i><i style="height:54%"><span>APR</span></i><i style="height:70%"><span>MAY</span></i><i style="height:66%"><span>JUN</span></i><i class="current" style="height:88%"><span>JUL</span></i></div></article>
+          <article class="activity-card"><div class="card-head"><div><span class="eyebrow">NEEDS ATTENTION</span><h2>Quick actions</h2></div></div><div class="action-list"><button><span class="coral-bg">₹</span><div><b>26 pending renewals</b><small>₹38,400 outstanding</small></div><em>→</em></button><button><span class="amber-bg">◷</span><div><b>8 memberships expire soon</b><small>Within the next 7 days</small></div><em>→</em></button><button><span class="violet-bg">♟</span><div><b>5 new enquiries</b><small>Waiting for follow-up</small></div><em>→</em></button></div></article>
+        </section>
+        <section class="member-table-card"><div class="section-title"><div><span class="eyebrow">MEMBERS</span><h2>Recent activity</h2></div><button class="text-btn">View all members →</button></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Plan</th><th>Trainer</th><th>Last visit</th><th>Status</th><th></th></tr></thead><tbody id="memberRows"></tbody></table></div></section>
+      </div>
     </main>
   </div>
 
+  <div class="language-menu" id="languageMenu">
+    <button data-lang="English">English <span>✓</span></button><button data-lang="தமிழ்">தமிழ்</button><button data-lang="हिन्दी">हिन्दी</button><button data-lang="తెలుగు">తెలుగు</button><button data-lang="മലയാളം">മലയാളം</button><button data-lang="ಕನ್ನಡ">ಕನ್ನಡ</button><button data-lang="বাংলা">বাংলা</button><button data-lang="मराठी">मराठी</button><button data-lang="ગુજરાતી">ગુજરાતી</button>
+  </div>
+  <aside class="audio-panel" id="audioPanel" aria-label="Voice Guide">
+    <div class="audio-panel-head"><div><span>🔊</span><div><b>Voice Guide</b><small id="audioLocale">English audio</small></div></div><button id="audioClose" aria-label="Close Voice Guide">×</button></div>
+    <div class="audio-status"><i id="audioPulse"></i><span id="audioStatus">Ready to listen</span></div>
+    <button class="audio-primary" id="readPageBtn"><span>▶</span><div><b>Read this screen</b><small>Hear the visible content</small></div></button>
+    <div class="audio-controls">
+      <button id="pauseAudioBtn" aria-label="Pause or resume audio">Ⅱ <small>Pause</small></button>
+      <button id="stopAudioBtn" aria-label="Stop audio">■ <small>Stop</small></button>
+    </div>
+    <label class="audio-speed"><span>Reading speed</span><output id="speedOutput">1×</output><input id="audioSpeed" type="range" min="0.7" max="1.4" value="1" step="0.1"></label>
+    <p class="audio-help">Voice availability depends on your device. FitSugar automatically chooses the closest voice for your selected language.</p>
+  </aside>
   <div class="toast" id="toast"></div>
-  <div class="modal-backdrop" id="modalBackdrop"><section class="modal"><button id="modalClose" class="modal-close">Close</button><div id="modalContent"></div></section></div>
-  <script src="app.js"></script>
+  <div class="install-sheet-backdrop" id="installSheetBackdrop">
+    <section class="install-sheet" aria-labelledby="installSheetTitle">
+      <button class="install-sheet-close" id="installSheetClose" aria-label="Close installation guide">×</button>
+      <img class="install-app-icon" src="icon.svg" alt="">
+      <h2 id="installSheetTitle">Install FitSugar Pro</h2>
+      <p id="installSheetDescription">Add the app to your device for faster, full-screen access.</p>
+      <div class="install-steps" id="installSteps"></div>
+      <button class="install-native-btn" id="nativeInstallBtn">Install now</button>
+      <small class="install-secure-note">Installation requires HTTPS when deployed publicly.</small>
+    </section>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div>
+  </div>
+  <script src="i18n.js?v=22"></script>
+  <script src="india-foods.js?v=22"></script>
+  <script src="app.js?v=22"></script>
+  <script src="workout.js?v=22"></script>
+  <script src="restart.js?v=22"></script>
+  <script src="business.js?v=22"></script>
+  <script src="core.js?v=22"></script>
+  <script src="audio.js?v=24"></script>
+  <script src="install.js?v=22"></script>
 </body>
 </html>

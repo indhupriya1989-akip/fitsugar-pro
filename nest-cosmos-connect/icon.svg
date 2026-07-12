@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Nest Cosmos Connect">
+  <rect width="512" height="512" rx="108" fill="#0c2138"/>
+  <path d="M116 390V178l140-82 140 82v212h-74V238h-132v152z" fill="#0f5fb8"/>
+  <path d="M162 390V216l94-55 94 55v174h-48V258h-92v132z" fill="#17a56b"/>
+  <rect x="216" y="278" width="80" height="112" rx="10" fill="#ffffff"/>
+  <rect x="226" y="216" width="26" height="28" rx="5" fill="#ffffff"/>
+  <rect x="260" y="216" width="26" height="28" rx="5" fill="#ffffff"/>
+  <circle cx="390" cy="122" r="32" fill="#f59b22"/>
+</svg>
