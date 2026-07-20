@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nest Cosmos Connect is a complete apartment management platform for residents, association teams, security, staff and finance operations." />
+  <meta name="theme-color" content="#0f5fb8" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Nest Cosmos" />
+  <title>Nest Cosmos Connect</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" data-view="overview" aria-label="Nest Cosmos Connect home">
+        <span class="brand-mark">NC</span>
+        <span><b>Nest Cosmos</b><small>Connect</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary navigation">
+        <p>Operations</p>
+        <button class="nav-item active" data-view="overview"><span>01</span>Overview</button>
+        <button class="nav-item" data-view="resident"><span>02</span>Resident Hub</button>
+        <button class="nav-item" data-view="payments"><span>03</span>Payments</button>
+        <button class="nav-item" data-view="complaints"><span>04</span>Complaints</button>
+        <button class="nav-item" data-view="visitors"><span>05</span>Visitors</button>
+        <button class="nav-item" data-view="facilities"><span>06</span>Facilities</button>
+        <button class="nav-item" data-view="community"><span>07</span>Community</button>
+        <p>Administration</p>
+        <button class="nav-item" data-view="staff"><span>08</span>Staff</button>
+        <button class="nav-item" data-view="finance"><span>09</span>Finance</button>
+        <button class="nav-item" data-view="reports"><span>10</span>Reports</button>
+        <button class="nav-item" data-view="settings"><span>11</span>Setup</button>
+      </nav>
+      <div class="side-card">
+        <b>Emergency Mode</b>
+        <span>Push, SMS and email alert workflow</span>
+        <button class="light-btn" id="emergencyBtn">Send drill alert</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
+        <div class="search-box"><span>Search</span><input id="globalSearch" placeholder="Flat, resident, payment, visitor, document..." /></div>
+        <div class="top-actions">
+          <select id="roleSelect" aria-label="Switch role"></select>
+          <button class="icon-btn" id="languageToggle" aria-label="Toggle language">TA</button>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">Dark</button>
+          <button class="install-btn" id="installBtn">Install PWA</button>
+        </div>
+      </header>
+
+      <section class="role-banner" id="roleBanner"></section>
+
+      <section class="view active" id="overviewView">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">Pondicherry Pattai Salai, Sholinganallur, Chennai</span>
+            <h1>Nest Cosmos Connect</h1>
+            <p>One platform for maintenance collections, complaints, visitors, security, facilities, staff, accounts, notices, documents, polls and emergency communication.</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-view="resident">Open resident app</button>
+              <button class="btn ghost" data-view="reports">View admin portal</button>
+            </div>
+          </div>
+          <img src="assets/nest-cosmos-hero.png" alt="Modern apartment community operations dashboard" />
+        </div>
+        <div class="kpi-grid" id="overviewKpis"></div>
+        <section class="split-grid">
+          <article class="panel stack-panel">
+            <div class="panel-head"><div><span class="eyebrow">Live Operations</span><h2>Today at Nest Cosmos</h2></div><button class="text-btn" data-view="reports">Export</button></div>
+            <div class="timeline" id="activityFeed"></div>
+          </article>
+          <article class="panel command-panel">
+            <div class="panel-head"><div><span class="eyebrow">Role Based Access</span><h2>Workspace permissions</h2></div></div>
+            <div class="role-grid" id="roleCards"></div>
+          </article>
+        </section>
+      </section>
+
+      <section class="view" id="residentView">
+        <div class="page-head"><div><span class="eyebrow">Resident / Owner / Tenant</span><h1>Resident Hub</h1><p>Payments, complaints, visitors, family, vehicles, documents and admin chat from one mobile-friendly home.</p></div><button class="btn primary" data-modal="profile">Update profile</button></div>
+        <div class="resident-layout">
+          <article class="panel dues-card"><span class="eyebrow">Current Due</span><h2>Rs. 4,250</h2><p>July maintenance due on 15 July 2026. Late fee Rs. 250 after due date.</p><div class="pay-methods"><button data-pay="UPI">UPI</button><button data-pay="Card">Card</button><button data-pay="Net Banking">Net Banking</button></div></article>
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Family & Assets</span><h2>Flat B-704</h2></div></div><div class="chip-list"><span>Owner: Arjun Mehta</span><span>4 family members</span><span>2 vehicles</span><span>2 emergency contacts</span></div></article>
+          <article class="panel chat-card"><div class="panel-head"><div><span class="eyebrow">Admin Chat</span><h2>Quick help</h2></div></div><div class="messages" id="chatMessages"></div><form id="chatForm" class="inline-form"><input placeholder="Ask admin..." required /><button>Send</button></form></article>
+        </div>
+        <div class="module-grid" id="residentModules"></div>
+      </section>
+
+      <section class="view" id="paymentsView">
+        <div class="page-head"><div><span class="eyebrow">Maintenance Payments</span><h1>Billing and Collections</h1><p>Monthly bill generation, online payments, cash recording, receipts, defaulters and flat-wise statements.</p></div><button class="btn primary" id="generateBillsBtn">Generate July bills</button></div>
+        <div class="kpi-grid" id="paymentKpis"></div>
+        <section class="panel"><div class="panel-head"><div><span class="eyebrow">Flat-wise Ledger</span><h2>Maintenance status</h2></div><button class="text-btn" data-export="payments">CSV export</button></div><div class="table-wrap"><table><thead><tr><th>Flat</th><th>Resident</th><th>Amount</th><th>Status</th><th>Method</th><th>Receipt</th></tr></thead><tbody id="paymentRows"></tbody></table></div></section>
+      </section>
+
+      <section class="view" id="complaintsView">
+        <div class="page-head"><div><span class="eyebrow">Complaint Management</span><h1>Ticket Flow</h1><p>Resident to admin to staff assignment, ETA tracking, photos/videos and resident rating.</p></div><button class="btn primary" data-modal="complaint">Raise complaint</button></div>
+        <div class="workflow"><span>Resident</span><i></i><span>Admin</span><i></i><span>Assign Staff</span><i></i><span>In Progress</span><i></i><span>Completed</span><i></i><span>Rating</span></div>
+        <div class="complaint-board" id="complaintBoard"></div>
+      </section>
+
+      <section class="view" id="visitorsView">
+        <div class="page-head"><div><span class="eyebrow">Security App</span><h1>Visitor and Vehicle Gate</h1><p>Entry, photo, vehicle number, flat approval, delivery, maid, driver and exit logs.</p></div><button class="btn primary" data-modal="visitor">Add expected visitor</button></div>
+        <div class="security-console">
+          <article class="panel scan-panel"><span class="eyebrow">Gate Search</span><h2>Find visitor, vehicle or flat</h2><form id="gateSearchForm" class="inline-form"><input placeholder="TN 07, B-704, mobile..." required /><button>Search</button></form><div id="gateResult" class="search-result">Security can search vehicles and visitor approvals instantly.</div></article>
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Pending Approvals</span><h2>Resident decisions</h2></div></div><div id="visitorList" class="visitor-list"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="facilitiesView">
+        <div class="page-head"><div><span class="eyebrow">Facility Booking</span><h1>Calendar and Approvals</h1><p>Community hall, terrace, club house, gym, play area, party hall and guest parking bookings.</p></div><button class="btn primary" data-modal="booking">Book facility</button></div>
+        <div class="facility-grid" id="facilityGrid"></div>
+      </section>
+
+      <section class="view" id="communityView">
+        <div class="page-head"><div><span class="eyebrow">Notices, Polls, Documents</span><h1>Community Desk</h1><p>Moderated announcements, buy/sell, lost and found, events, searchable documents and polls.</p></div><button class="btn primary" data-modal="notice">Publish notice</button></div>
+        <div class="community-grid">
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Notice Board</span><h2>Published alerts</h2></div></div><div id="noticeList"></div></article>
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Poll</span><h2>Festival budget approval</h2></div></div><div class="poll"><button data-vote="yes">Approve</button><button data-vote="no">Reject</button><div class="poll-bar"><i id="pollFill"></i></div><small id="pollText"></small></div></article>
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">Documents</span><h2>Association library</h2></div><button class="text-btn" data-export="documents">Index</button></div><div id="documentList"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="staffView">
+        <div class="page-head"><div><span class="eyebrow">Staff Management</span><h1>Attendance and Work Orders</h1><p>Security, housekeeping, electrician, plumber, lift technician and garden staff operations.</p></div><button class="btn primary" data-modal="staff">Assign task</button></div>
+        <div class="staff-grid" id="staffGrid"></div>
+      </section>
+
+      <section class="view" id="financeView">
+        <div class="page-head"><div><span class="eyebrow">Expense and Accounts</span><h1>Finance Control</h1><p>EB bill, water tanker, generator diesel, lift maintenance, salary, repairs and cash flow.</p></div><button class="btn primary" data-modal="expense">Record expense</button></div>
+        <div class="finance-layout"><article class="panel"><div class="panel-head"><div><span class="eyebrow">Expense Split</span><h2>July 2026</h2></div></div><div class="bar-list" id="expenseBars"></div></article><article class="panel"><div class="panel-head"><div><span class="eyebrow">P&L Snapshot</span><h2>Association accounts</h2></div></div><div class="statement" id="statement"></div></article></div>
+      </section>
+
+      <section class="view" id="reportsView">
+        <div class="page-head"><div><span class="eyebrow">Reports and PDF Generator</span><h1>Admin Reports</h1><p>Maintenance, pending dues, complaint analytics, visitors, expenses, audit, monthly and yearly reports.</p></div><button class="btn primary" id="downloadReportBtn">Download summary</button></div>
+        <div class="report-grid" id="reportGrid"></div>
+        <section class="panel architecture"><div class="panel-head"><div><span class="eyebrow">Production Architecture</span><h2>Scalable implementation blueprint</h2></div></div><div id="architectureList"></div></section>
+      </section>
+
+      <section class="view" id="settingsView">
+        <div class="page-head"><div><span class="eyebrow">Apartment Setup</span><h1>Configuration</h1><p>Apartment, blocks, floors, flat numbering, dues, bank, UPI, GST and notification channels.</p></div><button class="btn primary" id="saveSettingsBtn">Save setup</button></div>
+        <form class="settings-grid" id="settingsForm"></form>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="modal-backdrop" id="modalBackdrop"><section class="modal"><button id="modalClose" class="modal-close">Close</button><div id="modalContent"></div></section></div>
+  <script src="app.js"></script>
+</body>
+</html>
