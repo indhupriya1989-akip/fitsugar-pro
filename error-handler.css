@@ -1,0 +1,24 @@
+/* FitSugar Pro resilient error/offline UI */
+.fs-network-banner{
+  position:fixed;left:50%;top:14px;transform:translateX(-50%);
+  z-index:99999;display:flex;align-items:center;gap:10px;
+  max-width:min(92vw,760px);padding:11px 14px;border-radius:14px;
+  background:#20231f;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.18);
+  font:600 14px/1.35 "DM Sans",system-ui,sans-serif
+}
+.fs-network-banner[hidden]{display:none}
+.fs-network-banner.is-error{background:#8b2d26}
+.fs-network-banner.is-success{background:#23613f}
+.fs-network-banner button{
+  border:1px solid rgba(255,255,255,.35);background:transparent;color:inherit;
+  border-radius:999px;padding:6px 10px;font:inherit;cursor:pointer
+}
+.fs-error-card{
+  margin:16px;padding:18px;border:1px solid #ead8d2;border-radius:16px;
+  background:#fff7f4;color:#54251f;font:500 14px/1.5 "DM Sans",system-ui,sans-serif
+}
+.fs-error-card b{display:block;margin-bottom:4px}
+.fs-img-failed{object-fit:contain!important;background:#f4f3ef!important;padding:16px}
+@media(max-width:640px){
+  .fs-network-banner{top:8px;width:calc(100vw - 16px);justify-content:space-between}
+}
